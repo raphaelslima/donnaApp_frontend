@@ -1,15 +1,11 @@
-import { Text, View } from "react-native"
-import styled from "styled-components/native"
-
-const TextContainer = styled.Text`
-    color: pink;
-`
+import { Text } from "react-native"
+import Container from "../components/Container";
 
 const Home = () => {
     return(
-        <View>
-            <TextContainer>Teste Home</TextContainer>
-        </View>
+        <Container>
+            <Text>Teste</Text>
+        </Container>
     )
 }
 
