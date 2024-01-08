@@ -44,4 +44,9 @@ export const styles = StyleSheet.create({
         width: '100%',
         textAlign: "center",
     },
+    msgError: {
+        color: theme.colors.primaryRed,
+        fontFamily: theme.font.fontWeight.bold,
+        marginTop: 5
+    }
 })
