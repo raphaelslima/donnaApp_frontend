@@ -31,9 +31,6 @@ const Form = () => {
         return
     }
 
-    var number = '63992017738';
-    number = number.toString().replace(/(\d{2})(\d{1})(\d{4})(\d{4})/, "($1) $2 $3-$4")
-
     return (
         <View style={styles.containerForm}>
             <View>
@@ -46,7 +43,7 @@ const Form = () => {
                     <TextInput 
                         style={styles.input}  
                         keyboardType={'phone-pad'}
-                        value={value}
+                        value={value?.replace(/(\d{2})(\d{1})(\d{4})(\d{4})/, "($1) $2 $3-$4")}
                         onChangeText={onChange}
                         />
                 )}
