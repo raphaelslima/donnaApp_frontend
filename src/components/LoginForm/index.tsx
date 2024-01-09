@@ -24,7 +24,6 @@ const Form = () => {
         return null
     }
 
-
     const handleSign = (data: any) => {  
         console.log(data)
         Alert.alert('Sucesso', 'Bem Vinda ao DonnApp!')
