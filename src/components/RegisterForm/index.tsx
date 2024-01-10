@@ -1,7 +1,45 @@
-import { Text, TextInput, TouchableOpacity, View } from "react-native"
+import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native"
 import { styles } from "./style"
+import api from "../../services/axios"
+import { useState } from "react"
+
+interface respCep {
+    data: {
+        bairro : string, 
+        localidade : string, 
+        logradouro : string,
+        uf : string
+    }
+}
 
 const RegisterForm = () => {
+    const [street, setStreet] = useState('')
+    const [district, setDistrict] = useState('')
+    const [city, setCity] = useState('')
+    const [state, setState] = useState('')
+
+    const searchAdressForCEP = async (cep: string) => {
+        if(cep === ''){
+            Alert.alert('Atenção', 'Preencha o CEP!')
+            return
+        }
+
+        if(cep.length === 8){
+
+            try{
+
+                const response : respCep = await api.get(`${cep}/json/`)
+                setStreet(response.data.logradouro)
+                setDistrict(response.data.bairro)
+                setCity(response.data.localidade)
+                setState(response.data.uf)
+
+            }catch(error){
+                console.log('ERROR' + error)
+            }
+        }
+    }
+
     return(
         <View style={styles.containerFormRegister} >
             <View style={styles.containerFields} >
@@ -22,7 +60,7 @@ const RegisterForm = () => {
                     </View>
                     <View style={styles.labelAndInput}>
                         <Text style={styles.label}>CPF:</Text>
-                        <TextInput style={styles.inputHeight}/>
+                        <TextInput style={styles.inputHeight} />
                     </View>
                 </View>
                 <View style={styles.rowFields}>
@@ -32,23 +70,34 @@ const RegisterForm = () => {
                     </View>
                     <View style={styles.labelAndInput}>
                         <Text style={styles.label}>CEP:</Text>
-                        <TextInput style={styles.inputHeight}/>
+                        <TextInput style={styles.inputHeight}
+                        onChangeText={(cep) => searchAdressForCEP(cep)}
+                        keyboardType="phone-pad"
+                        maxLength={8}
+                        />
+                    </View>
+                </View>
+                <View style={styles.rowFields}>
+                    <View style={styles.labelAndInputOnly}>
+                        <Text style={styles.label}>Rua:</Text>
+                        <TextInput style={styles.inputHeight}
+                            value={street && street}
+                        />
                     </View>
                 </View>
                 <View style={styles.rowFields}>
                     <View style={styles.labelAndInput}>
                         <Text style={styles.label}>Estado:</Text>
-                        <TextInput style={styles.inputShort}/>
+                        <TextInput style={styles.inputShort}
+                            value={state && state}
+                        />
                     </View>
                     <View style={styles.labelAndInput}>
                         <Text style={styles.label}>Cidade:</Text>
-                        <TextInput style={styles.inputHeight}/>
-                    </View>
-                </View>
-                <View style={styles.rowFields}>
-                    <View style={styles.labelAndInputOnly}>
-                        <Text style={styles.label}>Endereço:</Text>
-                        <TextInput style={styles.inputHeight}/>
+                        <TextInput 
+                            style={styles.inputHeight}
+                            value={city && city}
+                        />
                     </View>
                 </View>
                 <View style={styles.rowFields}>
@@ -62,9 +111,16 @@ const RegisterForm = () => {
                     </View>
                 </View>
                 <View style={styles.rowFields}>
-                    <View style={styles.labelAndInputOnly}>
+                <View style={styles.labelAndInput}>
                         <Text style={styles.label}>Telefone:</Text>
-                        <TextInput style={styles.inputHeight}/>
+                        <TextInput style={styles.inputShort}/>
+                    </View>
+                    <View style={styles.labelAndInput}>
+                            <Text style={styles.label}>Bairro:</Text>
+                            <TextInput 
+                                style={styles.inputHeight}
+                                value={district && district}
+                                />
                     </View>
                 </View>
                 <View style={styles.rowFields}>
