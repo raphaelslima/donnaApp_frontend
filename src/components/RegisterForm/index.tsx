@@ -1,7 +1,10 @@
-import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native"
+import { Alert, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native"
 import { styles } from "./style"
 import api from "../../services/axios"
 import { useState } from "react"
+import {useForm, Controller} from 'react-hook-form'
+import {yupResolver} from '@hookform/resolvers/yup'
+import * as yup from 'yup'
 
 interface respCep {
     data: {
@@ -41,7 +44,7 @@ const RegisterForm = () => {
     }
 
     return(
-        <View style={styles.containerFormRegister} >
+        <ScrollView style={styles.containerFormRegister} >
             <View style={styles.containerFields} >
                 <View style={styles.rowFields}>
                     <View style={styles.labelAndInput}>
@@ -125,22 +128,32 @@ const RegisterForm = () => {
                 </View>
                 <View style={styles.rowFields}>
                     <View style={styles.labelAndInputOnly}>
-                        <Text style={styles.label}>Email:</Text>
+                        <Text style={styles.label}>Ponto de referência:</Text>
                         <TextInput style={styles.inputHeight}/>
                     </View>
                 </View>
                 <View style={styles.rowFields}>
-                    <View style={styles.labelAndInputOnly}>
-                        <Text style={styles.label}>Senha:</Text>
+                    <View style={styles.labelAndInput}>
+                        <Text style={styles.label}>Email:</Text>
                         <TextInput style={styles.inputHeight}/>
                     </View>
+                    <View style={[styles.labelAndInput, {alignItems: 'flex-end'}]}>
+                        <Text style={styles.labelPassowrd}>Senha:</Text>
+                        <TextInput 
+                            style={styles.inputShort}
+                            secureTextEntry
+                        />
+                    </View>
+                </View>
+                <View style={styles.rowFields}>
+                    
                 </View>
             </View>
 
             <TouchableOpacity style={styles.btnSubimit}>
                 <Text style={styles.btnSubimitText} >Próximo</Text>
             </TouchableOpacity>
-        </View>
+        </ScrollView>
     )
 }
 

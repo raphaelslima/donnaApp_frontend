@@ -62,5 +62,13 @@ export const styles = StyleSheet.create({
         fontFamily: theme.font.fontWeight.bold,
         width:'100%',
         textAlign: 'center'
+    },
+    labelPassowrd: {
+        color: theme.colors.primaryWhite,
+        fontFamily: theme.font.fontWeight.regular,
+        fontSize: 12,
+        width: '80%', 
+        display: 'flex', 
+        justifyContent: 'flex-start'
     }
 })
