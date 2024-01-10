@@ -1,46 +1,69 @@
 import { Alert, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native"
 import { styles } from "./style"
 import api from "../../services/axios"
-import { useState } from "react"
+import { respCep } from "../../interfaces/respCep"
 import {useForm, Controller} from 'react-hook-form'
 import {yupResolver} from '@hookform/resolvers/yup'
 import * as yup from 'yup'
+import { useFonts, Inter_400Regular, Inter_700Bold} from "@expo-google-fonts/inter"
 
-interface respCep {
-    data: {
-        bairro : string, 
-        localidade : string, 
-        logradouro : string,
-        uf : string
-    }
-}
+const schema = yup.object({
+    firstName: yup.string().required('Informe seu Nome.').min(3, "Campo nome precisa ter pelo mneos 3 caracteres"),
+    lastName: yup.string().required('Informe seu sobrenome.').min(2, "Campo sobrenome precisa ter pelo mneos 2 caracteres"),
+    dateOfBirth: yup.string(),//.max(new Date(), 'Não é possível incluir uma data futura'),
+    cpf: yup.string().required('Informe seu cpf.'),
+    gender: yup.string().required('Informe seu gênero.'),
+    cep: yup.string().required('Informe seu CEP.').min(8, "O CEP possui 8 número."),
+    street: yup.string().required('Informe sua rua.'),
+    state: yup.string().required('Informe sua senha.').min(2, "Por favor, digite a sigla do seu estado."),
+    city: yup.string().required('Informe sua cidade.'),
+    numberAddress: yup.string().required('Informe o número da sua residencia.'),
+    complement: yup.string().required('Informe o complemento do seu endereço.'),
+    phoneNumber: yup.string().required('Informe seu telefone celular.').min(11, "O telefone tem 11 número").max(11, "O telefone tem 11 número"),
+    distict: yup.string().required('Informe seu bairro.'),
+    referencePoint: yup.string().required('Informe seu o ponto de referência.'),
+    email: yup.string().required('Informe sua senha.').email('Email inváido'),
+    password: yup.string().required('Informe sua senha.').min(5, "A senha deve ter no minimo 5 caracteres."),
+})
 
 const RegisterForm = () => {
-    const [street, setStreet] = useState('')
-    const [district, setDistrict] = useState('')
-    const [city, setCity] = useState('')
-    const [state, setState] = useState('')
+    const { control, handleSubmit, formState: {errors}, setValue } = useForm({
+        resolver: yupResolver(schema),
+        defaultValues:{
+            city: 'Sabará'
+        }
+    })
 
     const searchAdressForCEP = async (cep: string) => {
-        if(cep === ''){
-            Alert.alert('Atenção', 'Preencha o CEP!')
-            return
-        }
 
         if(cep.length === 8){
-
+            const cepFormat = cep.replace(/\D/g, '')
             try{
 
-                const response : respCep = await api.get(`${cep}/json/`)
-                setStreet(response.data.logradouro)
-                setDistrict(response.data.bairro)
-                setCity(response.data.localidade)
-                setState(response.data.uf)
+                const response : respCep = await api.get(`${cepFormat}/json/`)
+                setValue('street',response.data.logradouro)
+                setValue('distict',response.data.bairro)
+                setValue('city',response.data.localidade)
+                setValue('state',response.data.uf)
 
             }catch(error){
-                console.log('ERROR' + error)
+                Alert.alert('Atenção', 'CEP inválido')
             }
-        }
+        }     
+    }
+
+    const handleRegister = (data: any) => {
+        console.log(data)
+        Alert.alert('Bem vindo(a)', 'Seu usuário foi registrado no donaApp.')
+    }
+
+    const [fontLoaded] = useFonts({
+        Inter_400Regular,
+        Inter_700Bold
+    })
+
+    if(!fontLoaded){
+        return null
     }
 
     return(
@@ -49,100 +72,270 @@ const RegisterForm = () => {
                 <View style={styles.rowFields}>
                     <View style={styles.labelAndInput}>
                         <Text style={styles.label}>Nome:</Text>
-                        <TextInput style={styles.inputShort}/>
+                        
+                        <Controller
+                            control={control}
+                            name="firstName"
+                            render={({ field: {value, onChange} }) => (
+                                <TextInput 
+                                    style={styles.inputShort}
+                                    value={value}
+                                    onChangeText={onChange}
+                                />
+                                
+                            )}
+                        />
+                        {errors.firstName && <Text style={styles.erroMsg}>{errors.firstName.message}</Text>}
                     </View>
+
                     <View style={styles.labelAndInput}>
                         <Text style={styles.label}>Sobrenme:</Text>
-                        <TextInput style={styles.inputHeight}/>
+                        <Controller
+                            control={control}
+                            name="lastName"
+                            render={({ field: {value, onChange} }) => (
+                                <TextInput 
+                                    style={styles.inputHeight}
+                                    value={value}
+                                    onChangeText={onChange}
+                                />
+                                
+                            )}
+                        />
+                        {errors.lastName && <Text style={styles.erroMsg}>{errors.lastName.message}</Text>}
                     </View>
                 </View>
                 <View style={styles.rowFields}>
                     <View style={styles.labelAndInput}>
                         <Text style={styles.label}>Data de Nascimento:</Text>
-                        <TextInput style={styles.inputShort}/>
+                        <Controller
+                            control={control}
+                            name="dateOfBirth"
+                            render={({ field: {value, onChange} }) => (
+                                <TextInput 
+                                    style={styles.inputShort}
+                                    value={value}
+                                    onChangeText={onChange}
+                                />
+                            )}
+                        />
+                         {errors.dateOfBirth && <Text style={styles.erroMsg}>{errors.dateOfBirth.message}</Text>}
                     </View>
                     <View style={styles.labelAndInput}>
                         <Text style={styles.label}>CPF:</Text>
-                        <TextInput style={styles.inputHeight} />
+                        <Controller
+                            control={control}
+                            name="cpf"
+                            render={({ field: {value, onChange} }) => (
+                                <TextInput 
+                                    style={styles.inputHeight}
+                                    value={value}
+                                    onChangeText={onChange}
+                                    keyboardType="phone-pad"
+                                />
+                                
+                            )}
+                        />
+                        {errors.cpf && <Text style={styles.erroMsg}>{errors.cpf.message}</Text>}
                     </View>
                 </View>
                 <View style={styles.rowFields}>
                     <View style={styles.labelAndInput}>
                         <Text style={styles.label}>Gênero:</Text>
-                        <TextInput style={styles.inputShort}/>
+                        <Controller
+                            control={control}
+                            name="gender"
+                            render={({ field: {value, onChange} }) => (
+                                <TextInput 
+                                    style={styles.inputShort}
+                                    value={value}
+                                    onChangeText={onChange}
+                                />
+                            )}
+                        />
+                        {errors.gender && <Text style={styles.erroMsg}>{errors.gender.message}</Text>}
                     </View>
                     <View style={styles.labelAndInput}>
                         <Text style={styles.label}>CEP:</Text>
-                        <TextInput style={styles.inputHeight}
-                        onChangeText={(cep) => searchAdressForCEP(cep)}
-                        keyboardType="phone-pad"
-                        maxLength={8}
+                        <Controller
+                            control={control}
+                            name="cep"
+                            render={({ field }) => (
+                                <TextInput 
+                                    style={styles.inputHeight}
+                                    value={field.value}
+                                    keyboardType="phone-pad"
+                                    onChangeText={(value) => {
+                                        field.onChange(value)
+                                        searchAdressForCEP(value)
+                                    }}
+                                    maxLength={8}
+                                />
+                            )}
                         />
+                        {errors.cep && <Text style={styles.erroMsg}>{errors.cep.message}</Text>}
                     </View>
                 </View>
                 <View style={styles.rowFields}>
                     <View style={styles.labelAndInputOnly}>
                         <Text style={styles.label}>Rua:</Text>
-                        <TextInput style={styles.inputHeight}
-                            value={street && street}
+                        <Controller
+                            control={control}
+                            name="street"
+                            render={({ field: {value, onChange} }) => (
+                                <TextInput 
+                                    style={styles.inputHeight}
+                                    value={value}
+                                    onChangeText={onChange}
+                                />
+                            )}
                         />
+                        {errors.street && <Text style={styles.erroMsg}>{errors.street.message}</Text>}
                     </View>
                 </View>
                 <View style={styles.rowFields}>
                     <View style={styles.labelAndInput}>
                         <Text style={styles.label}>Estado:</Text>
-                        <TextInput style={styles.inputShort}
-                            value={state && state}
+                        <Controller
+                            control={control}
+                            name="state"
+                            render={({ field: {value, onChange} }) => (
+                                <TextInput 
+                                    style={styles.inputShort}
+                                    value={value}
+                                    onChangeText={onChange}
+                                />
+                            )}
                         />
+                        {errors.state && <Text style={styles.erroMsg}>{errors.state.message}</Text>}
                     </View>
                     <View style={styles.labelAndInput}>
                         <Text style={styles.label}>Cidade:</Text>
-                        <TextInput 
-                            style={styles.inputHeight}
-                            value={city && city}
+                        <Controller
+                            control={control}
+                            name="city"
+                            render={({ field: {value, onChange} }) => (
+                                <TextInput 
+                                    style={styles.inputHeight}
+                                    value={value}
+                                    onChangeText={onChange}
+                                />
+                            )}
                         />
+                        {errors.city && <Text style={styles.erroMsg}>{errors.city.message}</Text>}
                     </View>
                 </View>
                 <View style={styles.rowFields}>
                     <View style={styles.labelAndInput}>
                         <Text style={styles.label}>Número:</Text>
-                        <TextInput style={styles.inputShort}/>
+                        <Controller
+                            control={control}
+                            name="numberAddress"
+                            render={({ field: {value, onChange} }) => (
+                                <TextInput 
+                                    style={styles.inputShort}
+                                    value={value}
+                                    onChangeText={onChange}
+                                />
+                            )}
+                        />
+                         {errors.numberAddress && <Text style={styles.erroMsg}>{errors.numberAddress.message}</Text>}
                     </View>
                     <View style={styles.labelAndInput}>
                         <Text style={styles.label}>Complemento:</Text>
-                        <TextInput style={styles.inputHeight}/>
+                        <Controller
+                            control={control}
+                            name="complement"
+                            render={({ field: {value, onChange} }) => (
+                                <TextInput 
+                                    style={styles.inputHeight}
+                                    value={value}
+                                    onChangeText={onChange}
+                                />
+                            )}
+                        />
+                        {errors.complement && <Text style={styles.erroMsg}>{errors.complement.message}</Text>}
                     </View>
                 </View>
                 <View style={styles.rowFields}>
                 <View style={styles.labelAndInput}>
                         <Text style={styles.label}>Telefone:</Text>
-                        <TextInput style={styles.inputShort}/>
+                        <Controller
+                            control={control}
+                            name="phoneNumber"
+                            render={({ field: {value, onChange} }) => (
+                                <TextInput 
+                                    style={styles.inputShort}
+                                    value={value}
+                                    onChangeText={onChange}
+                                />
+                            )}
+                        />
+                        {errors.phoneNumber && <Text style={styles.erroMsg}>{errors.phoneNumber.message}</Text>}
                     </View>
                     <View style={styles.labelAndInput}>
                             <Text style={styles.label}>Bairro:</Text>
-                            <TextInput 
-                                style={styles.inputHeight}
-                                value={district && district}
-                                />
+                            <Controller
+                                control={control}
+                                name="distict"
+                                render={({ field: {value, onChange} }) => (
+                                    <TextInput 
+                                        style={styles.inputHeight}
+                                        value={value}
+                                        onChangeText={onChange}
+                                    />
+                                )}
+                            />
+                            {errors.distict && <Text style={styles.erroMsg}>{errors.distict.message}</Text>}
                     </View>
                 </View>
                 <View style={styles.rowFields}>
                     <View style={styles.labelAndInputOnly}>
                         <Text style={styles.label}>Ponto de referência:</Text>
-                        <TextInput style={styles.inputHeight}/>
+                        <Controller
+                            control={control}
+                            name="referencePoint"
+                            render={({ field: {value, onChange} }) => (
+                                <TextInput 
+                                    style={styles.inputHeight}
+                                    value={value}
+                                    onChangeText={onChange}
+                                />
+                            )}
+                        />
+                        {errors.referencePoint && <Text style={styles.erroMsg}>{errors.referencePoint.message}</Text>}
                     </View>
                 </View>
                 <View style={styles.rowFields}>
                     <View style={styles.labelAndInput}>
                         <Text style={styles.label}>Email:</Text>
-                        <TextInput style={styles.inputHeight}/>
+                        <Controller
+                            control={control}
+                            name="email"
+                            render={({ field: {value, onChange} }) => (
+                                <TextInput 
+                                    style={styles.inputHeight}
+                                    value={value}
+                                    onChangeText={onChange}
+                                />
+                            )}
+                        />
+                        {errors.email && <Text style={styles.erroMsg}>{errors.email.message}</Text>}
                     </View>
                     <View style={[styles.labelAndInput, {alignItems: 'flex-end'}]}>
                         <Text style={styles.labelPassowrd}>Senha:</Text>
-                        <TextInput 
-                            style={styles.inputShort}
-                            secureTextEntry
+                        <Controller
+                            control={control}
+                            name="password"
+                            render={({ field: {value, onChange} }) => (
+                                <TextInput 
+                                    style={styles.inputShort}
+                                    value={value}
+                                    onChangeText={onChange}
+                                />
+                            )}
                         />
+                        {errors.password && <Text style={styles.erroMsg}>{errors.password.message}</Text>}
                     </View>
                 </View>
                 <View style={styles.rowFields}>
@@ -150,7 +343,7 @@ const RegisterForm = () => {
                 </View>
             </View>
 
-            <TouchableOpacity style={styles.btnSubimit}>
+            <TouchableOpacity style={styles.btnSubimit} onPress={handleSubmit(handleRegister)}>
                 <Text style={styles.btnSubimitText} >Próximo</Text>
             </TouchableOpacity>
         </ScrollView>

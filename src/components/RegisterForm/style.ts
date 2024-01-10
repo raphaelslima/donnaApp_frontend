@@ -70,5 +70,8 @@ export const styles = StyleSheet.create({
         width: '80%', 
         display: 'flex', 
         justifyContent: 'flex-start'
+    },
+    erroMsg:{
+        color: theme.colors.primaryRed
     }
 })
