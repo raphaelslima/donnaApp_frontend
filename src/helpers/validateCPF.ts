@@ -2,6 +2,8 @@ export const validateCPF = (inputCPF: string) => {
     var sum = 0;
     var rest;
 
+    inputCPF = inputCPF.replace(/\.|-/gm,'')
+
     if(inputCPF == '00000000000') return false;
     for(let i=1; i<=9; i++) sum = sum + parseInt(inputCPF.substring(i-1, i)) * (11 - i);
     rest = (sum * 10) % 11;

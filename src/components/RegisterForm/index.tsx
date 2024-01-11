@@ -10,6 +10,7 @@ import { Dropdown } from 'react-native-element-dropdown';;
 import { SetStateAction, useState } from "react"
 import { formatPhoneNumber } from "../../helpers/formatPhoneNumber"
 import { validateCPF } from "../../helpers/validateCPF"
+import { formatCPF } from "../../helpers/formatCPF"
 
 const schema = yup.object({
     firstName: yup.string().required('Informe seu Nome.').min(3, "Campo nome precisa ter pelo mneos 3 caracteres"),
@@ -178,8 +179,11 @@ const RegisterForm = () => {
                                 <TextInput 
                                     style={styles.inputHeight}
                                     value={value}
-                                    onChangeText={onChange}
                                     keyboardType="numeric"
+                                    onChangeText={(value) => {
+                                        onChange(value)
+                                        value.length === 11 && setValue('cpf', formatCPF(value))
+                                    }}
                                 />
                                 
                             )}
