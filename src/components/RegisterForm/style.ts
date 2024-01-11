@@ -73,5 +73,11 @@ export const styles = StyleSheet.create({
     },
     erroMsg:{
         color: theme.colors.primaryRed
+    },
+    DropDownPicker:{
+        width: '80%',
+        backgroundColor: theme.colors.primaryWhite,
+        borderRadius: 8,
+        padding: 0
     }
 })

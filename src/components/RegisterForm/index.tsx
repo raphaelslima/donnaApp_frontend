@@ -1,4 +1,5 @@
-import { Alert, ScrollView, Text, TextInput, TouchableOpacity, View } from "react-native"
+import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native"
+import { ScrollView } from 'react-native-virtualized-view';
 import { styles } from "./style"
 import api from "../../services/axios"
 import { respCep } from "../../interfaces/respCep"
@@ -6,33 +7,58 @@ import {useForm, Controller} from 'react-hook-form'
 import {yupResolver} from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { useFonts, Inter_400Regular, Inter_700Bold} from "@expo-google-fonts/inter"
+import DropDownPicker from 'react-native-dropdown-picker';
+import { useState } from "react"
+import { genderTypes } from "../../helpers/genderTypes";
 
 const schema = yup.object({
     firstName: yup.string().required('Informe seu Nome.').min(3, "Campo nome precisa ter pelo mneos 3 caracteres"),
     lastName: yup.string().required('Informe seu sobrenome.').min(2, "Campo sobrenome precisa ter pelo mneos 2 caracteres"),
-    dateOfBirth: yup.string(),//.max(new Date(), 'Não é possível incluir uma data futura'),
+    dateOfBirth: yup.string(),
     cpf: yup.string().required('Informe seu cpf.'),
     gender: yup.string().required('Informe seu gênero.'),
     cep: yup.string().required('Informe seu CEP.').min(8, "O CEP possui 8 número."),
     street: yup.string().required('Informe sua rua.'),
-    state: yup.string().required('Informe sua senha.').min(2, "Por favor, digite a sigla do seu estado."),
+    state: yup.string().required('Informe seu estado.').min(2, "Por favor, digite a sigla do seu estado."),
     city: yup.string().required('Informe sua cidade.'),
     numberAddress: yup.string().required('Informe o número da sua residencia.'),
     complement: yup.string().required('Informe o complemento do seu endereço.'),
     phoneNumber: yup.string().required('Informe seu telefone celular.').min(11, "O telefone tem 11 número").max(11, "O telefone tem 11 número"),
     distict: yup.string().required('Informe seu bairro.'),
-    referencePoint: yup.string().required('Informe seu o ponto de referência.'),
-    email: yup.string().required('Informe sua senha.').email('Email inváido'),
+    referencePoint: yup.string(),
+    email: yup.string().email('Email inváido'),
     password: yup.string().required('Informe sua senha.').min(5, "A senha deve ter no minimo 5 caracteres."),
 })
 
 const RegisterForm = () => {
-    const { control, handleSubmit, formState: {errors}, setValue } = useForm({
+    const { control, handleSubmit, formState: {errors}, setValue, clearErrors } = useForm({
         resolver: yupResolver(schema),
         defaultValues:{
-            city: 'Sabará'
+            city: 'Sabará',
+            state: 'MG'
         }
     })
+
+    const [gender, setGender] = useState(genderTypes);
+
+    const [open, setOpen] = useState(false);
+    const [valueGender, setValueGender] = useState(null);
+
+    const formatDateInput = (date: string) : string => {
+        let dateFormat = ''
+        if(date !== ''){
+            if(date.length === 2){
+                dateFormat = date
+                dateFormat = [date.slice(0, 2), '/', dateFormat.slice(3)].join('')
+                setValue('dateOfBirth', dateFormat)
+            } else if (date.length  === 5) {
+                dateFormat = date
+                dateFormat = [date.slice(0, 5), '/', dateFormat.slice(5)].join('')
+                setValue('dateOfBirth', dateFormat)
+            }
+        }
+        return dateFormat
+    }
 
     const searchAdressForCEP = async (cep: string) => {
 
@@ -46,6 +72,8 @@ const RegisterForm = () => {
                 setValue('city',response.data.localidade)
                 setValue('state',response.data.uf)
 
+                clearErrors(['street', 'distict', 'city', 'state'])
+
             }catch(error){
                 Alert.alert('Atenção', 'CEP inválido')
             }
@@ -55,6 +83,10 @@ const RegisterForm = () => {
     const handleRegister = (data: any) => {
         console.log(data)
         Alert.alert('Bem vindo(a)', 'Seu usuário foi registrado no donaApp.')
+    }
+
+    const updateGender = (text: string) => {
+            setValue('gender', text)
     }
 
     const [fontLoaded] = useFonts({
@@ -111,11 +143,17 @@ const RegisterForm = () => {
                         <Controller
                             control={control}
                             name="dateOfBirth"
-                            render={({ field: {value, onChange} }) => (
+                            render={({ field}) => (
                                 <TextInput 
                                     style={styles.inputShort}
-                                    value={value}
-                                    onChangeText={onChange}
+                                    value={field.value}
+                                    onChangeText={(value) => {
+                                        field.onChange(value)
+                                        formatDateInput(value)
+                                    }}
+                                    maxLength={10}
+                                    placeholder="DD/MM/AAAA"
+                                    keyboardType="numeric"
                                 />
                             )}
                         />
@@ -131,7 +169,7 @@ const RegisterForm = () => {
                                     style={styles.inputHeight}
                                     value={value}
                                     onChangeText={onChange}
-                                    keyboardType="phone-pad"
+                                    keyboardType="numeric"
                                 />
                                 
                             )}
@@ -145,12 +183,19 @@ const RegisterForm = () => {
                         <Controller
                             control={control}
                             name="gender"
-                            render={({ field: {value, onChange} }) => (
-                                <TextInput 
-                                    style={styles.inputShort}
-                                    value={value}
-                                    onChangeText={onChange}
-                                />
+                            render={() => (
+                                <DropDownPicker
+                                style={styles.DropDownPicker}
+                                open={open}
+                                value={valueGender}
+                                items={gender}
+                                setOpen={setOpen}
+                                setValue={setValueGender}
+                                setItems={setGender}
+                                placeholder={''}
+                                onChangeValue={(text) => typeof text === 'string' && updateGender(text)}
+                               
+                            />
                             )}
                         />
                         {errors.gender && <Text style={styles.erroMsg}>{errors.gender.message}</Text>}
@@ -164,7 +209,7 @@ const RegisterForm = () => {
                                 <TextInput 
                                     style={styles.inputHeight}
                                     value={field.value}
-                                    keyboardType="phone-pad"
+                                    keyboardType="numeric"
                                     onChangeText={(value) => {
                                         field.onChange(value)
                                         searchAdressForCEP(value)
@@ -195,38 +240,6 @@ const RegisterForm = () => {
                 </View>
                 <View style={styles.rowFields}>
                     <View style={styles.labelAndInput}>
-                        <Text style={styles.label}>Estado:</Text>
-                        <Controller
-                            control={control}
-                            name="state"
-                            render={({ field: {value, onChange} }) => (
-                                <TextInput 
-                                    style={styles.inputShort}
-                                    value={value}
-                                    onChangeText={onChange}
-                                />
-                            )}
-                        />
-                        {errors.state && <Text style={styles.erroMsg}>{errors.state.message}</Text>}
-                    </View>
-                    <View style={styles.labelAndInput}>
-                        <Text style={styles.label}>Cidade:</Text>
-                        <Controller
-                            control={control}
-                            name="city"
-                            render={({ field: {value, onChange} }) => (
-                                <TextInput 
-                                    style={styles.inputHeight}
-                                    value={value}
-                                    onChangeText={onChange}
-                                />
-                            )}
-                        />
-                        {errors.city && <Text style={styles.erroMsg}>{errors.city.message}</Text>}
-                    </View>
-                </View>
-                <View style={styles.rowFields}>
-                    <View style={styles.labelAndInput}>
                         <Text style={styles.label}>Número:</Text>
                         <Controller
                             control={control}
@@ -240,6 +253,38 @@ const RegisterForm = () => {
                             )}
                         />
                          {errors.numberAddress && <Text style={styles.erroMsg}>{errors.numberAddress.message}</Text>}
+                    </View>
+                    <View style={styles.labelAndInput}>
+                            <Text style={styles.label}>Bairro:</Text>
+                            <Controller
+                                control={control}
+                                name="distict"
+                                render={({ field: {value, onChange} }) => (
+                                    <TextInput 
+                                        style={styles.inputHeight}
+                                        value={value}
+                                        onChangeText={onChange}
+                                    />
+                                )}
+                            />
+                            {errors.distict && <Text style={styles.erroMsg}>{errors.distict.message}</Text>}
+                    </View>
+                </View>
+                <View style={styles.rowFields}>
+                <View style={styles.labelAndInput}>
+                        <Text style={styles.label}>Cidade:</Text>
+                        <Controller
+                            control={control}
+                            name="city"
+                            render={({ field: {value, onChange} }) => (
+                                <TextInput 
+                                    style={styles.inputShort}
+                                    value={value}
+                                    onChangeText={onChange}
+                                />
+                            )}
+                        />
+                        {errors.city && <Text style={styles.erroMsg}>{errors.city.message}</Text>}
                     </View>
                     <View style={styles.labelAndInput}>
                         <Text style={styles.label}>Complemento:</Text>
@@ -273,24 +318,8 @@ const RegisterForm = () => {
                         />
                         {errors.phoneNumber && <Text style={styles.erroMsg}>{errors.phoneNumber.message}</Text>}
                     </View>
+                    
                     <View style={styles.labelAndInput}>
-                            <Text style={styles.label}>Bairro:</Text>
-                            <Controller
-                                control={control}
-                                name="distict"
-                                render={({ field: {value, onChange} }) => (
-                                    <TextInput 
-                                        style={styles.inputHeight}
-                                        value={value}
-                                        onChangeText={onChange}
-                                    />
-                                )}
-                            />
-                            {errors.distict && <Text style={styles.erroMsg}>{errors.distict.message}</Text>}
-                    </View>
-                </View>
-                <View style={styles.rowFields}>
-                    <View style={styles.labelAndInputOnly}>
                         <Text style={styles.label}>Ponto de referência:</Text>
                         <Controller
                             control={control}
@@ -332,6 +361,7 @@ const RegisterForm = () => {
                                     style={styles.inputShort}
                                     value={value}
                                     onChangeText={onChange}
+                                    secureTextEntry
                                 />
                             )}
                         />
