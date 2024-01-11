@@ -11,6 +11,7 @@ import { SetStateAction, useState } from "react"
 import { formatPhoneNumber } from "../../helpers/formatPhoneNumber"
 import { validateCPF } from "../../helpers/validateCPF"
 import { formatCPF } from "../../helpers/formatCPF"
+import { formatCEP } from "../../helpers/formatCEP"
 
 const schema = yup.object({
     firstName: yup.string().required('Informe seu Nome.').min(3, "Campo nome precisa ter pelo mneos 3 caracteres"),
@@ -27,10 +28,10 @@ const schema = yup.object({
     city: yup.string().required('Informe sua cidade.'),
     numberAddress: yup.string().required('Informe o número da sua residencia.'),
     complement: yup.string().required('Informe o complemento do seu endereço.'),
-    phoneNumber: yup.string().required('Informe seu telefone celular.').min(11, "O telefone tem 11 número").max(11, "O telefone tem 11 número"),
+    phoneNumber: yup.string().required('Informe seu celular.'),
     distict: yup.string().required('Informe seu bairro.'),
     referencePoint: yup.string(),
-    email: yup.string().email('Email inváido'),
+    email: yup.string().required('Informe seu email').email('Email inváido'),
     password: yup.string().required('Informe sua senha.').min(5, "A senha deve ter no minimo 5 caracteres."),
 })
 
@@ -75,14 +76,16 @@ const RegisterForm = () => {
             try{
 
                 const response : respCep = await api.get(`${cepFormat}/json/`)
+
+                if(!response.data.bairro && !response.data.logradouro && !response.data.localidade){
+                    Alert.alert('Atenção', 'CEP inválido')
+                }
+
                 setValue('street',response.data.logradouro)
                 setValue('distict',response.data.bairro)
                 setValue('city',response.data.localidade)
-                setValue('state',response.data.uf)
 
                 clearErrors(['street', 'distict', 'city', 'state'])
-
-                //setValue('cep', formatPhoneNumber(cep)) 
 
             }catch(error){
                 Alert.alert('Atenção', 'CEP inválido')
@@ -94,11 +97,6 @@ const RegisterForm = () => {
         console.log(data)
         Alert.alert('Bem vindo(a)', 'Seu usuário foi registrado no donaApp.')
     }
-
-    // const updateGender = () => {
-    //     valueGender && setValue('gender', valueGender)
-    //     clearErrors('gender')
-    // }
 
     const [fontLoaded] = useFonts({
         Inter_400Regular,
@@ -265,6 +263,7 @@ const RegisterForm = () => {
                                     style={styles.inputShort}
                                     value={value}
                                     onChangeText={onChange}
+                                    keyboardType="numeric"
                                 />
                             )}
                         />
