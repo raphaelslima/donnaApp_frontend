@@ -10,6 +10,7 @@ import { Dropdown } from 'react-native-element-dropdown';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { SetStateAction, useState } from "react"
 import { genderTypes } from "../../helpers/genderTypes";
+import { formatPhoneNumber } from "../../helpers/formatPhoneNumber"
 
 const schema = yup.object({
     firstName: yup.string().required('Informe seu Nome.').min(3, "Campo nome precisa ter pelo mneos 3 caracteres"),
@@ -77,6 +78,8 @@ const RegisterForm = () => {
                 setValue('state',response.data.uf)
 
                 clearErrors(['street', 'distict', 'city', 'state'])
+
+                //setValue('cep', formatPhoneNumber(cep)) 
 
             }catch(error){
                 Alert.alert('Atenção', 'CEP inválido')
@@ -219,6 +222,7 @@ const RegisterForm = () => {
                                     onChangeText={(value) => {
                                         field.onChange(value)
                                         searchAdressForCEP(value)
+                                        
                                     }}
                                     maxLength={8}
                                 />
@@ -318,7 +322,11 @@ const RegisterForm = () => {
                                 <TextInput 
                                     style={styles.inputShort}
                                     value={value}
-                                    onChangeText={onChange}
+                                    keyboardType="numeric"
+                                    onChangeText={(value) => {
+                                        onChange(value)
+                                        value.length === 11 && setValue('phoneNumber', formatPhoneNumber(value)) 
+                                    }}
                                 />
                             )}
                         />
