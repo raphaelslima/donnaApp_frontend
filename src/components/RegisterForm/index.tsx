@@ -1,5 +1,4 @@
-import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native"
-import { ScrollView } from 'react-native-virtualized-view';
+import { Alert, Text, TextInput, ScrollView, TouchableOpacity, View } from "react-native"
 import { styles } from "./style"
 import api from "../../services/axios"
 import { respCep } from "../../interfaces/respCep"
@@ -7,8 +6,9 @@ import {useForm, Controller} from 'react-hook-form'
 import {yupResolver} from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { useFonts, Inter_400Regular, Inter_700Bold} from "@expo-google-fonts/inter"
-import DropDownPicker from 'react-native-dropdown-picker';
-import { useState } from "react"
+import { Dropdown } from 'react-native-element-dropdown';
+import AntDesign from '@expo/vector-icons/AntDesign';
+import { SetStateAction, useState } from "react"
 import { genderTypes } from "../../helpers/genderTypes";
 
 const schema = yup.object({
@@ -39,10 +39,14 @@ const RegisterForm = () => {
         }
     })
 
-    const [gender, setGender] = useState(genderTypes);
+    const [gender, setGender] = useState([
+        {label: 'Cisgênero', value: 'cisgênero'},
+        {label: 'Transgênero', value: 'transgênero'},
+        {label: 'Gênero neutro', value: 'gênero neutro'},
+        {label: 'Não-binário', value: 'não-binário'},
+    ]);
 
-    const [open, setOpen] = useState(false);
-    const [valueGender, setValueGender] = useState(null);
+    const [valueGender, setValueGender] = useState<SetStateAction<string>>('');
 
     const formatDateInput = (date: string) : string => {
         let dateFormat = ''
@@ -85,9 +89,10 @@ const RegisterForm = () => {
         Alert.alert('Bem vindo(a)', 'Seu usuário foi registrado no donaApp.')
     }
 
-    const updateGender = (text: string) => {
-            setValue('gender', text)
-    }
+    // const updateGender = () => {
+    //     valueGender && setValue('gender', valueGender)
+    //     clearErrors('gender')
+    // }
 
     const [fontLoaded] = useFonts({
         Inter_400Regular,
@@ -183,19 +188,20 @@ const RegisterForm = () => {
                         <Controller
                             control={control}
                             name="gender"
-                            render={() => (
-                                <DropDownPicker
-                                style={styles.DropDownPicker}
-                                open={open}
-                                value={valueGender}
-                                items={gender}
-                                setOpen={setOpen}
-                                setValue={setValueGender}
-                                setItems={setGender}
-                                placeholder={''}
-                                onChangeValue={(text) => typeof text === 'string' && updateGender(text)}
-                               
-                            />
+                            render={({field}) => (
+                                <Dropdown
+                                    style={styles.inputShort}
+                                    data={gender}
+                                    maxHeight={300}
+                                    labelField="label"
+                                    valueField="value"
+                                    value={field.value}
+                                    onChange={item => {
+                                        field.onChange(item.value)
+                                        setValueGender(item.value)
+                                    }}
+                                    placeholder=""
+                                    />
                             )}
                         />
                         {errors.gender && <Text style={styles.erroMsg}>{errors.gender.message}</Text>}
