@@ -6,17 +6,19 @@ import {useForm, Controller} from 'react-hook-form'
 import {yupResolver} from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { useFonts, Inter_400Regular, Inter_700Bold} from "@expo-google-fonts/inter"
-import { Dropdown } from 'react-native-element-dropdown';
-import AntDesign from '@expo/vector-icons/AntDesign';
+import { Dropdown } from 'react-native-element-dropdown';;
 import { SetStateAction, useState } from "react"
-import { genderTypes } from "../../helpers/genderTypes";
 import { formatPhoneNumber } from "../../helpers/formatPhoneNumber"
+import { validateCPF } from "../../helpers/validateCPF"
 
 const schema = yup.object({
     firstName: yup.string().required('Informe seu Nome.').min(3, "Campo nome precisa ter pelo mneos 3 caracteres"),
     lastName: yup.string().required('Informe seu sobrenome.').min(2, "Campo sobrenome precisa ter pelo mneos 2 caracteres"),
     dateOfBirth: yup.string(),
-    cpf: yup.string().required('Informe seu cpf.'),
+    cpf: yup.string().required('Informe seu cpf.').test('ValidationCPF', 'CPF inválido', 
+    function(value) { 
+        return validateCPF(value)
+     }),
     gender: yup.string().required('Informe seu gênero.'),
     cep: yup.string().required('Informe seu CEP.').min(8, "O CEP possui 8 número."),
     street: yup.string().required('Informe sua rua.'),
