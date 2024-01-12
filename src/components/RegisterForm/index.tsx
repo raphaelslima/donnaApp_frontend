@@ -1,4 +1,4 @@
-import { Alert, Text, TextInput, ScrollView, TouchableOpacity, View } from "react-native"
+import { Alert, Text, TextInput, ScrollView, TouchableOpacity, View, Button } from "react-native"
 import { styles } from "./style"
 import api from "../../services/axios"
 import { respCep } from "../../interfaces/respCep"
@@ -11,12 +11,14 @@ import { SetStateAction, useState } from "react"
 import { formatPhoneNumber } from "../../helpers/formatPhoneNumber"
 import { validateCPF } from "../../helpers/validateCPF"
 import { formatCPF } from "../../helpers/formatCPF"
-import { formatCEP } from "../../helpers/formatCEP"
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { formatDateToString } from "../../helpers/formatDateToString";
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 const schema = yup.object({
     firstName: yup.string().required('Informe seu Nome.').min(3, "Campo nome precisa ter pelo mneos 3 caracteres"),
     lastName: yup.string().required('Informe seu sobrenome.').min(2, "Campo sobrenome precisa ter pelo mneos 2 caracteres"),
-    dateOfBirth: yup.string(),
+    dateOfBirth: yup.date().required('Informe sua data de nascimento'),
     cpf: yup.string().required('Informe seu cpf.').test('ValidationCPF', 'CPF inválido', 
     function(value) { 
         return validateCPF(value)
@@ -44,6 +46,9 @@ const RegisterForm = () => {
         }
     })
 
+    const [showDate, setShowDate] = useState(false)
+    const [date, setDate] = useState(new Date())
+
     const [gender, setGender] = useState([
         {label: 'Cisgênero', value: 'cisgênero'},
         {label: 'Transgênero', value: 'transgênero'},
@@ -52,22 +57,6 @@ const RegisterForm = () => {
     ]);
 
     const [valueGender, setValueGender] = useState<SetStateAction<string>>('');
-
-    const formatDateInput = (date: string) : string => {
-        let dateFormat = ''
-        if(date !== ''){
-            if(date.length === 2){
-                dateFormat = date
-                dateFormat = [date.slice(0, 2), '/', dateFormat.slice(3)].join('')
-                setValue('dateOfBirth', dateFormat)
-            } else if (date.length  === 5) {
-                dateFormat = date
-                dateFormat = [date.slice(0, 5), '/', dateFormat.slice(5)].join('')
-                setValue('dateOfBirth', dateFormat)
-            }
-        }
-        return dateFormat
-    }
 
     const searchAdressForCEP = async (cep: string) => {
 
@@ -149,23 +138,33 @@ const RegisterForm = () => {
                 <View style={styles.rowFields}>
                     <View style={styles.labelAndInput}>
                         <Text style={styles.label}>Data de Nascimento:</Text>
-                        <Controller
-                            control={control}
-                            name="dateOfBirth"
-                            render={({ field}) => (
-                                <TextInput 
-                                    style={styles.inputShort}
-                                    value={field.value}
-                                    onChangeText={(value) => {
-                                        field.onChange(value)
-                                        formatDateInput(value)
-                                    }}
-                                    maxLength={10}
-                                    placeholder="DD/MM/AAAA"
-                                    keyboardType="numeric"
+
+                        <TouchableOpacity 
+                            onPress={() => setShowDate(true)}
+                            style={styles.inputDate}
+                            >
+                                <Text>{date.getDate() === new Date().getDate() && date.getMonth() === new Date().getMonth() && date.getFullYear() === new Date().getFullYear() ? "DD/MM/YYYY" : formatDateToString(date)}</Text>
+                                <Ionicons name="calendar" size={24} color="black" />
+                            </TouchableOpacity>
+                        {
+                            showDate && (
+                                <Controller
+                                    control={control}
+                                    name="dateOfBirth"
+                                    render={({ field}) => (
+                                       <DateTimePicker
+                                        mode="date"
+                                        value={field.value ? field.value : new Date()}
+                                        onChange={(e, value) => {
+                                            field.onChange(value)
+                                            setShowDate(false)
+                                            value && setDate(value)
+                                        }}
+                                       />
+                                    )}
                                 />
-                            )}
-                        />
+                            )
+                        }
                          {errors.dateOfBirth && <Text style={styles.erroMsg}>{errors.dateOfBirth.message}</Text>}
                     </View>
                     <View style={styles.labelAndInput}>

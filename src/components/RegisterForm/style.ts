@@ -79,5 +79,16 @@ export const styles = StyleSheet.create({
         backgroundColor: theme.colors.primaryWhite,
         borderRadius: 8,
         padding: 0
+    },
+    inputDate: {
+        backgroundColor: theme.colors.primaryWhite,
+        width: '80%',
+        borderRadius: 8,
+        height: 30,
+        display: 'flex',
+        flexDirection: "row",
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: 8
     }
 })
