@@ -14,6 +14,7 @@ import { formatCPF } from "../../helpers/formatCPF"
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { formatDateToString } from "../../helpers/formatDateToString";
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { useRouter } from "expo-router"
 
 const schema = yup.object({
     firstName: yup.string().required('Informe seu Nome.').min(3, "Campo nome precisa ter pelo mneos 3 caracteres"),
@@ -45,6 +46,8 @@ const RegisterForm = () => {
             state: 'MG'
         }
     })
+
+    const router = useRouter()
 
     const [showDate, setShowDate] = useState(false)
     const [date, setDate] = useState(new Date())
@@ -85,6 +88,7 @@ const RegisterForm = () => {
     const handleRegister = (data: any) => {
         console.log(data)
         Alert.alert('Bem vindo(a)', 'Seu usuário foi registrado no donaApp.')
+        router.push('/home')
     }
 
     const [fontLoaded] = useFonts({
@@ -391,9 +395,9 @@ const RegisterForm = () => {
                 </View>
             </View>
 
-            <TouchableOpacity style={styles.btnSubimit} onPress={handleSubmit(handleRegister)}>
-                <Text style={styles.btnSubimitText} >Cadastrar</Text>
-            </TouchableOpacity>
+                <TouchableOpacity style={styles.btnSubimit} onPress={handleSubmit(handleRegister)}>
+                    <Text style={styles.btnSubimitText} >Cadastrar</Text>
+                </TouchableOpacity>
         </ScrollView>
     )
 }

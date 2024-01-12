@@ -4,6 +4,7 @@ import { useFonts, Inter_400Regular, Inter_700Bold } from "@expo-google-fonts/in
 import {useForm, Controller} from 'react-hook-form'
 import {yupResolver} from '@hookform/resolvers/yup'
 import * as yup from 'yup'
+import { useRouter } from 'expo-router';
 
 const schema = yup.object({
     phoneNumber: yup.string().required('Informe seu telefone.').min(11, "Telefone inválido"),
@@ -14,6 +15,8 @@ const Form = () => {
     const { control, handleSubmit, formState: {errors} } = useForm({
         resolver: yupResolver(schema)
     })
+
+    const router = useRouter();
 
     const [fontLoaded] = useFonts({
         Inter_400Regular,
@@ -26,7 +29,8 @@ const Form = () => {
 
     const handleSign = (data: any) => {  
         console.log(data)
-        Alert.alert('Sucesso', 'Bem Vinda ao DonnApp!')
+        Alert.alert('Bem vindo (a)', 'Você logou no donaApp.')
+        router.push('/home')
         return
     }
 
@@ -71,9 +75,9 @@ const Form = () => {
             <Text style={styles.forgetPassword}>Esqueceu sua senha?</Text>
 
             <View style={styles.areaSubmit}>
-                <TouchableOpacity style={styles.btnSubmit} onPress={handleSubmit(handleSign)}>
-                <Text style={styles.btnSubmitText}>Acessar</Text>
-            </TouchableOpacity>
+                    <TouchableOpacity style={styles.btnSubmit} onPress={handleSubmit(handleSign)}>
+                        <Text style={styles.btnSubmitText}>Acessar</Text>
+                    </TouchableOpacity>
             </View>
         </View>
     )

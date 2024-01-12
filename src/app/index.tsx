@@ -5,7 +5,7 @@ import Form from "../components/LoginForm";
 import { useFonts, Inter_400Regular, Inter_700Bold } from "@expo-google-fonts/inter";
 import { Link } from "expo-router";
 
-const Home = () => {
+const Register = () => {
 
     const [fontLoaded] = useFonts({
         Inter_400Regular,
@@ -33,4 +33,4 @@ const Home = () => {
     )
 }
 
-export default Home
+export default Register
