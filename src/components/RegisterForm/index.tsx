@@ -383,7 +383,7 @@ const RegisterForm = () => {
                                 />
                             )}
                         />
-                        {errors.password && <Text style={styles.erroMsg}>{errors.password.message}</Text>}
+                        {errors.password && <Text style={styles.erroMsgPassword}>{errors.password.message}</Text>}
                     </View>
                 </View>
                 <View style={styles.rowFields}>
@@ -392,7 +392,7 @@ const RegisterForm = () => {
             </View>
 
             <TouchableOpacity style={styles.btnSubimit} onPress={handleSubmit(handleRegister)}>
-                <Text style={styles.btnSubimitText} >Próximo</Text>
+                <Text style={styles.btnSubimitText} >Cadastrar</Text>
             </TouchableOpacity>
         </ScrollView>
     )

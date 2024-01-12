@@ -72,7 +72,8 @@ export const styles = StyleSheet.create({
         justifyContent: 'flex-start'
     },
     erroMsg:{
-        color: theme.colors.primaryRed
+        color: theme.colors.primaryRed,
+        width: '100%'
     },
     DropDownPicker:{
         width: '80%',
@@ -90,5 +91,9 @@ export const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingHorizontal: 8
+    },
+    erroMsgPassword:{
+        color: theme.colors.primaryRed,
+        width: '80%'
     }
 })
