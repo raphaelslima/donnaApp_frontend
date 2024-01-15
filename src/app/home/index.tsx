@@ -1,6 +1,8 @@
 import { Image, Linking, Text, TouchableOpacity, View } from "react-native";
 import { styles } from "./style";
 import { useFonts, Inter_400Regular, Inter_700Bold } from "@expo-google-fonts/inter";
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { theme } from "../../theme/theme";
 
 const Home = () => {
 
@@ -16,6 +18,23 @@ const Home = () => {
     return(
         <View style={styles.containerHome}>
             <View style={styles.headerHome}>
+                <Image source={require('../../assets/img/imgHome.png')} style={styles.backgroundImg}/>
+                <View style={styles.headerContent}>
+                </View>
+                <View style={styles.headerTextAndActions}>
+                    <Text style={styles.title}>Sabará</Text>
+                    <Text style={styles.subtitle}>Qual serviço de assistência social você está buscando?</Text>
+                    <TouchableOpacity style={styles.btnSeachService}>
+                    <Ionicons name="search" style={styles.iconSearch}/>
+                        <Text>Buscar serviços</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity 
+                        style={styles.btnWpp} 
+                        onPress={() => Linking.openURL('whatsapp://send?text=teste&phone=31996001712')}>
+                    <Ionicons name="logo-whatsapp" style={styles.iconWpp}/>
+                        <Text style={{color: theme.colors.primaryWhite}}>WhatsApp CREAS</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
             <View style={styles.sessionBtn}>
                 <Text style={styles.titleSessionBtn}>Canais úteis:</Text>
