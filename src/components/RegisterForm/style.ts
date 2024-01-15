@@ -35,6 +35,14 @@ export const styles = StyleSheet.create({
         height: 30,
         paddingHorizontal: 8
     },
+    inputShortCity:{
+        fontFamily: theme.font.fontWeight.bold,
+        backgroundColor: theme.colors.primaryWhite,
+        width: '80%',
+        borderRadius: 8,
+        height: 30,
+        paddingHorizontal: 8
+    },
     inputHeight: {
         backgroundColor: theme.colors.primaryWhite,
         width: '100%',
@@ -95,5 +103,9 @@ export const styles = StyleSheet.create({
     erroMsgPassword:{
         color: theme.colors.primaryRed,
         width: '80%'
+    },
+    iconCalendar:{
+        color: theme.colors.primaryPurple,
+        fontSize: 24
     }
 })

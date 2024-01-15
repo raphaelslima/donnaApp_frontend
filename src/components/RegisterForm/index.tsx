@@ -148,7 +148,7 @@ const RegisterForm = () => {
                             style={styles.inputDate}
                             >
                                 <Text>{date.getDate() === new Date().getDate() && date.getMonth() === new Date().getMonth() && date.getFullYear() === new Date().getFullYear() ? "DD/MM/YYYY" : formatDateToString(date)}</Text>
-                                <Ionicons name="calendar" size={24} color="black" />
+                                <Ionicons name="calendar" style={styles.iconCalendar} />
                             </TouchableOpacity>
                         {
                             showDate && (
@@ -297,9 +297,12 @@ const RegisterForm = () => {
                             name="city"
                             render={({ field: {value, onChange} }) => (
                                 <TextInput 
-                                    style={styles.inputShort}
+                                    style={styles.inputShortCity}
                                     value={value}
                                     onChangeText={onChange}
+                                    editable={false}
+                                    selectTextOnFocus={false}
+                                    placeholder="Sabará"
                                 />
                             )}
                         />
