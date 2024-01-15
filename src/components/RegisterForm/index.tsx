@@ -184,6 +184,7 @@ const RegisterForm = () => {
                                     onChangeText={(value) => {
                                         onChange(value)
                                         value.length === 11 && setValue('cpf', formatCPF(value))
+                                        validateCPF(value) && clearErrors('cpf')
                                     }}
                                 />
                                 
