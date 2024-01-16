@@ -25,7 +25,7 @@ const Home = () => {
                 <View style={styles.headerTextAndActions}>
                     <Text style={styles.title}>Sabará</Text>
                     <Text style={styles.subtitle}>Qual serviço de assistência social você está buscando?</Text>
-                    <Link href={'/socialServices'} asChild>
+                    <Link href={'/listSocialServices'} asChild>
                     <TouchableOpacity style={styles.btnSeachService}>
                     <Ionicons name="search" style={styles.iconSearch}/>
                         <Text>Buscar serviços</Text>

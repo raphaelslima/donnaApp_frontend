@@ -3,7 +3,7 @@ export const theme = {
         primaryPurple: '#7B188B',
         primaryWhite: '#ffffff',
         primaryRed: '#ff375b',
-        primaryBlock: '#000000',
+        primaryBlack: '#000000',
         primaryGreen: '#25D366'
     },
     font:{

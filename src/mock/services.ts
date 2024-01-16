@@ -39,7 +39,7 @@ export const services = [
                 name: 'CRAS - Unidade Centro',
                 descriptionName: 'Centro de referência de Assistência Social',
                 descriptionService: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus placerat a augue ac euismod. Cras ut urna a nisi commodo laoreet r',
-                phoneNumber: 3136729046,
+                phoneNumber: '3136729046',
                 address: {
                     street: ' R. Mestra Ritinha',
                     district: 'Centro',

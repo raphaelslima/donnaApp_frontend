@@ -4,10 +4,9 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { styles } from "./style";
 import { Link } from "expo-router";
 import { services } from "../../mock/services";
-import { socialService } from "../../interfaces/socialService";
 import ItemListSocialService from "../../components/ItemListSocialService";
 
-const socialServices = () => {
+const listSocialServices = () => {
     return (
         <Container>
             <Link href={'/home'} asChild>
@@ -29,4 +28,4 @@ const socialServices = () => {
     )
 }
 
-export default socialServices
+export default listSocialServices
