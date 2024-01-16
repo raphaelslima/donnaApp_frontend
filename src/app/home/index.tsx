@@ -3,6 +3,7 @@ import { styles } from "./style";
 import { useFonts, Inter_400Regular, Inter_700Bold } from "@expo-google-fonts/inter";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { theme } from "../../theme/theme";
+import { Link } from "expo-router";
 
 const Home = () => {
 
@@ -24,10 +25,12 @@ const Home = () => {
                 <View style={styles.headerTextAndActions}>
                     <Text style={styles.title}>Sabará</Text>
                     <Text style={styles.subtitle}>Qual serviço de assistência social você está buscando?</Text>
+                    <Link href={'/socialServices'} asChild>
                     <TouchableOpacity style={styles.btnSeachService}>
                     <Ionicons name="search" style={styles.iconSearch}/>
                         <Text>Buscar serviços</Text>
                     </TouchableOpacity>
+                    </Link>
                     <TouchableOpacity 
                         style={styles.btnWpp} 
                         onPress={() => Linking.openURL('whatsapp://send?text=teste&phone=31996001712')}>
