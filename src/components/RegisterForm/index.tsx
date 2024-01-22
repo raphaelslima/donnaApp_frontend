@@ -28,7 +28,10 @@ const schema = yup.object({
     cep: yup.string().required('Informe seu CEP.').min(8, "O CEP possui 8 número."),
     street: yup.string().required('Informe sua rua.'),
     state: yup.string().required('Informe seu estado.').min(2, "Por favor, digite a sigla do seu estado."),
-    city: yup.string().required('Informe sua cidade.'),
+    city: yup.string().required('Informe sua cidade.').test('ValidationNameCity', 'Esse aplicativo é somente para a cidade de Sabará', 
+    function(value) { 
+        return value === 'Sabará'
+     }),
     numberAddress: yup.string().required('Informe o número da sua residencia.'),
     complement: yup.string().required('Informe o complemento do seu endereço.'),
     phoneNumber: yup.string().required('Informe seu celular.').min(8, "Por favor digite o telefone completo com DDD."),
