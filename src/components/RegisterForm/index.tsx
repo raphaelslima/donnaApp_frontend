@@ -31,7 +31,7 @@ const schema = yup.object({
     city: yup.string().required('Informe sua cidade.'),
     numberAddress: yup.string().required('Informe o número da sua residencia.'),
     complement: yup.string().required('Informe o complemento do seu endereço.'),
-    phoneNumber: yup.string().required('Informe seu celular.'),
+    phoneNumber: yup.string().required('Informe seu celular.').min(8, "Por favor digite o telefone completo com DDD."),
     distict: yup.string().required('Informe seu bairro.'),
     referencePoint: yup.string(),
     email: yup.string().required('Informe seu email').email('Email inváido'),
