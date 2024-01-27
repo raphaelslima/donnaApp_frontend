@@ -31,6 +31,7 @@ const UnitService = ({item}: props) => {
             <View>
                 <Text style={styles.subtitle}>Como chegar:</Text>
                 <Text style={styles.textInfo}>{formatAddress()}</Text>
+                <Text style={styles.textMaps} onPress={()=> Linking.openURL(`${item.googleMaps}`)}>Ir para o Google maps</Text>
             </View>
 
             <View>

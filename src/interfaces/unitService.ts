@@ -6,4 +6,5 @@ export interface unitService {
     address: address,
     site: string,
     email: string,
+    googleMaps: string
 }

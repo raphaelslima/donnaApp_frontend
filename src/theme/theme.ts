@@ -4,7 +4,8 @@ export const theme = {
         primaryWhite: '#ffffff',
         primaryRed: '#ff375b',
         primaryBlack: '#000000',
-        primaryGreen: '#25D366'
+        primaryGreen: '#25D366',
+        primaryLink: '#0A66C2'
     },
     font:{
         fontWeight:{

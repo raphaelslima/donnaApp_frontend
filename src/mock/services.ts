@@ -16,6 +16,7 @@ export const services = [
         },
         site: '',
         email: '',
+        googleMaps: 'https://maps.app.goo.gl/oLsqXgtZrtSV9v8o8'
     },
     {
         id: '2',
@@ -48,6 +49,7 @@ export const services = [
                 },
                 site: '',
                 email: '',
+                googleMaps: 'https://maps.app.goo.gl/oLsqXgtZrtSV9v8o8'
             },
             {
                 name: 'CRAS - Unidade Roça Grande',
@@ -62,6 +64,7 @@ export const services = [
                 },
                 site: '',
                 email: '',
+                googleMaps: 'https://maps.app.goo.gl/oLsqXgtZrtSV9v8o8'
             },
         ]
     },
@@ -82,6 +85,7 @@ export const services = [
         },
         site: '',
         email: '',
+        googleMaps: 'https://maps.app.goo.gl/oLsqXgtZrtSV9v8o8'
     },
     {
         id: '14',
@@ -100,6 +104,7 @@ export const services = [
         },
         site: '',
         email: '',
+        googleMaps: 'https://maps.app.goo.gl/oLsqXgtZrtSV9v8o8'
     },
     {
         id: '13',
@@ -118,6 +123,7 @@ export const services = [
         },
         site: '',
         email: '',
+        googleMaps: 'https://maps.app.goo.gl/oLsqXgtZrtSV9v8o8'
     },
     {
         id: '12',
@@ -136,6 +142,7 @@ export const services = [
         },
         site: '',
         email: '',
+        googleMaps: 'https://maps.app.goo.gl/oLsqXgtZrtSV9v8o8'
     },
     {
         id: '100',
@@ -154,6 +161,7 @@ export const services = [
         },
         site: '',
         email: '',
+        googleMaps: 'https://maps.app.goo.gl/oLsqXgtZrtSV9v8o8'
     },
     {
         id: '10',
@@ -172,6 +180,7 @@ export const services = [
         },
         site: '',
         email: '',
+        googleMaps: 'https://maps.app.goo.gl/oLsqXgtZrtSV9v8o8'
     },
 // 2 -  Delegacias (3 unidades)
 // 3 - Polícia Militar (2 unidades)

@@ -11,5 +11,6 @@ export interface socialService {
     address: address,
     site: string,
     email: string,
-    units?: unitService[]
+    units?: unitService[],
+    googleMaps: string
 }

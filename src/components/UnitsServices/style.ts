@@ -57,4 +57,9 @@ export const styles = StyleSheet.create({
         fontSize: 24,
         color: theme.colors.primaryWhite
     },
+    textMaps:{
+        marginVertical: 10,
+        color: theme.colors.primaryLink,
+        textDecorationLine: "underline"
+    }
 })
