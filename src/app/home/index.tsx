@@ -54,7 +54,7 @@ const Home = () => {
                         </View>
                         <Text style={styles.textImg}>Disque denúncia</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.ImgTopic} onPress={()=>{Linking.openURL('tel:180');}}>
+                    <TouchableOpacity style={styles.ImgTopic} onPress={()=>{Linking.openURL('tel:100');}}>
                     <View style={styles.img}>
                             <Image source={require('../../assets/img/img100.png')} />
                         </View>

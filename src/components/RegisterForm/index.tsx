@@ -15,12 +15,13 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { formatDateToString } from "../../helpers/formatDateToString";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from "expo-router"
+import {validateCellphone } from "../../helpers/validateCellphone"
 
 const schema = yup.object({
-    firstName: yup.string().required('Informe seu Nome.').min(3, "Campo nome precisa ter pelo mneos 3 caracteres"),
-    lastName: yup.string().required('Informe seu sobrenome.').min(2, "Campo sobrenome precisa ter pelo mneos 2 caracteres"),
-    dateOfBirth: yup.date().required('Informe sua data de nascimento'),
-    cpf: yup.string().required('Informe seu cpf.').test('ValidationCPF', 'CPF inválido', 
+    firstName: yup.string().required('Informe seu Nome.').min(3, "Campo nome precisa ter pelo mneos 3 caracteres."),
+    lastName: yup.string().required('Informe seu sobrenome.').min(2, "Campo sobrenome precisa ter pelo mneos 2 caracteres."),
+    dateOfBirth: yup.date().required('Informe sua data de nascimento.'),
+    cpf: yup.string().required('Informe seu cpf.').test('ValidationCPF', 'CPF inválido.', 
     function(value) { 
         return validateCPF(value)
      }),
@@ -28,16 +29,19 @@ const schema = yup.object({
     cep: yup.string().required('Informe seu CEP.').min(8, "O CEP possui 8 número."),
     street: yup.string().required('Informe sua rua.'),
     state: yup.string().required('Informe seu estado.').min(2, "Por favor, digite a sigla do seu estado."),
-    city: yup.string().required('Informe sua cidade.').test('ValidationNameCity', 'Esse aplicativo é somente para a cidade de Sabará', 
+    city: yup.string().required('Informe sua cidade.').test('ValidationNameCity', 'Esse aplicativo é somente para a cidade de Sabará.', 
     function(value) { 
         return value === 'Sabará'
      }),
     numberAddress: yup.string().required('Informe o número da sua residencia.'),
     complement: yup.string().required('Informe o complemento do seu endereço.'),
-    phoneNumber: yup.string().required('Informe seu celular.').min(8, "Por favor digite o telefone completo com DDD."),
+    phoneNumber: yup.string().required('Informe seu celular.').min(8, "Por favor digite o telefone completo com DDD.").test('ValidationCellphone', 'Celular inválido.', 
+    function(value) { 
+        return validateCellphone(value)
+     }),
     distict: yup.string().required('Informe seu bairro.'),
     referencePoint: yup.string(),
-    email: yup.string().required('Informe seu email').email('Email inváido'),
+    email: yup.string().required('Informe seu email.').email('Email inváido.'),
     password: yup.string().required('Informe sua senha.').min(5, "A senha deve ter no minimo 5 caracteres."),
 })
 
@@ -126,7 +130,7 @@ const RegisterForm = () => {
                     </View>
 
                     <View style={styles.labelAndInput}>
-                        <Text style={styles.label}>Sobrenme:</Text>
+                        <Text style={styles.label}>Sobrenome:</Text>
                         <Controller
                             control={control}
                             name="lastName"
@@ -329,7 +333,7 @@ const RegisterForm = () => {
                 </View>
                 <View style={styles.rowFields}>
                 <View style={styles.labelAndInput}>
-                        <Text style={styles.label}>Telefone:</Text>
+                        <Text style={styles.label}>Celular:</Text>
                         <Controller
                             control={control}
                             name="phoneNumber"
@@ -342,6 +346,7 @@ const RegisterForm = () => {
                                         onChange(value)
                                         value.length === 11 && setValue('phoneNumber', formatPhoneNumber(value)) 
                                     }}
+                                    maxLength={16}
                                 />
                             )}
                         />
