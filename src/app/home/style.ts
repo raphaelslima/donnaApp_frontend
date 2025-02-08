@@ -52,7 +52,6 @@ export const styles = StyleSheet.create({
         backgroundColor: theme.colors.primaryWhite,
         padding: 16,
         borderRadius: 8,
-        border: 'none',
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
@@ -70,7 +69,6 @@ export const styles = StyleSheet.create({
         backgroundColor: theme.colors.primaryGreen,
         padding: 16,
         borderRadius: 8,
-        border: 'none',
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
@@ -98,7 +96,8 @@ export const styles = StyleSheet.create({
     },
     img:{
         marginRight: 15,
-        width: 118
+        width: 118,
+        height: 100
     },
     textImg:{
         fontFamily: theme.font.fontWeight.bold,
