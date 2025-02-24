@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
     containerFields:{
         display: 'flex',
         flexDirection: 'column',
-        gap: 10,
+        gap: 8,
         marginBottom: 40
     },
     rowFields:{
@@ -32,7 +32,7 @@ export const styles = StyleSheet.create({
         backgroundColor: theme.colors.primaryWhite,
         width: '80%',
         borderRadius: 8,
-        height: 30,
+        height: 40,
         paddingHorizontal: 8
     },
     inputShortCity:{
@@ -40,14 +40,14 @@ export const styles = StyleSheet.create({
         backgroundColor: theme.colors.primaryWhite,
         width: '80%',
         borderRadius: 8,
-        height: 30,
+        height: 40,
         paddingHorizontal: 8
     },
     inputHeight: {
         backgroundColor: theme.colors.primaryWhite,
         width: '100%',
         borderRadius: 8,
-        height: 30,
+        height: 40,
         paddingHorizontal: 8
     },
     labelAndInputOnly: {

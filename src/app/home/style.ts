@@ -93,15 +93,20 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+        width: '100%'
     },
     img:{
         marginRight: 15,
         width: 118,
-        height: 100
+        height: '100%'
     },
     textImg:{
         fontFamily: theme.font.fontWeight.bold,
         textAlign: 'left',
-        width: '100%'
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
     }
 })

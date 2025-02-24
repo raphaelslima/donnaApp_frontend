@@ -6,18 +6,29 @@ export const styles = StyleSheet.create({
         backgroundColor: theme.colors.primaryWhite,
         width: '100%',
         marginBottom: 20,
-        padding: 16,
         borderRadius: 8,
         height: 80,
+        display: "flex",
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexWrap: 'wrap'
+    },
+    item:{
         display: "flex",
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        gap: 10
+        width: '100%',
+        gap: 10,
+        padding: 16
     },
     TextItem:{
         fontFamily: theme.font.fontWeight.regular,
-        fontSize: 14
+        fontSize: 12,
+        display: 'flex',
+        flexWrap: 'wrap'
+
     },
     iconItem:{
         color: theme.colors.primaryPurple,

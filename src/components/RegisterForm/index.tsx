@@ -16,6 +16,7 @@ import { formatDateToString } from "../../helpers/formatDateToString";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from "expo-router"
 import {validateCellphone } from "../../helpers/validateCellphone"
+import axios from "axios"
 
 const schema = yup.object({
     firstName: yup.string().required('Informe seu Nome.').min(3, "Campo nome precisa ter pelo mneos 3 caracteres."),
@@ -74,7 +75,7 @@ const RegisterForm = () => {
             const cepFormat = cep.replace(/\D/g, '')
             try{
 
-                const response : respCep = await api.get(`${cepFormat}/json/`)
+                const response : respCep = await axios.get(`https://viacep.com.br/ws/${cepFormat}/json/`)
 
                 if(!response.data.bairro && !response.data.logradouro && !response.data.localidade){
                     Alert.alert('Atenção', 'CEP inválido')
@@ -93,9 +94,13 @@ const RegisterForm = () => {
     }
 
     const handleRegister = (data: any) => {
-        console.log(data)
-        Alert.alert('Bem vindo(a)', 'Seu usuário foi registrado no donaApp.')
-        router.push('/home')
+         axios.post('http://10.0.2.2:4000/users/',data).then((res)=>{
+            console.log(res)
+            Alert.alert('Bem vindo(a)', 'Seu usuário foi registrado no donaApp.')
+            router.push('/home')
+        }). catch((err)=>{
+            console.log(err)
+        })
     }
 
     const [fontLoaded] = useFonts({
@@ -377,7 +382,7 @@ const RegisterForm = () => {
                             name="email"
                             render={({ field: {value, onChange} }) => (
                                 <TextInput 
-                                    style={styles.inputHeight}
+                                    style={[styles.inputHeight, {width: '80%'}]}
                                     value={value}
                                     onChangeText={onChange}
                                 />
@@ -385,14 +390,14 @@ const RegisterForm = () => {
                         />
                         {errors.email && <Text style={styles.erroMsg}>{errors.email.message}</Text>}
                     </View>
-                    <View style={[styles.labelAndInput, {alignItems: 'flex-end'}]}>
+                    <View style={styles.labelAndInput}>
                         <Text style={styles.labelPassowrd}>Senha:</Text>
                         <Controller
                             control={control}
                             name="password"
                             render={({ field: {value, onChange} }) => (
                                 <TextInput 
-                                    style={styles.inputShort}
+                                    style={[styles.inputShort, {width: '100%'}]}
                                     value={value}
                                     onChangeText={onChange}
                                     secureTextEntry

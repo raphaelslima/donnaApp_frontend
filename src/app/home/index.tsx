@@ -33,7 +33,7 @@ const Home = () => {
                     </Link>
                     <TouchableOpacity 
                         style={styles.btnWpp} 
-                        onPress={() => Linking.openURL('whatsapp://send?text=teste&phone=31996001712')}>
+                        onPress={() => Linking.openURL(`whatsapp://send?text=${`Boa noite, quero entrar em contato com o CRAS`}&phone=31996001712`)}>
                     <Ionicons name="logo-whatsapp" style={styles.iconWpp}/>
                         <Text style={{color: theme.colors.primaryWhite}}>WhatsApp CREAS</Text>
                     </TouchableOpacity>
@@ -48,7 +48,7 @@ const Home = () => {
                         </View>
                         <Text style={styles.textImg}>Denuncie violência contra mulher</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.ImgTopic} onPress={()=>{Linking.openURL('tel:181');}}>
+                    <TouchableOpacity style={[styles.ImgTopic, {marginLeft: 20}]} onPress={()=>{Linking.openURL('tel:181');}}>
                     <View style={styles.img}>
                             <Image source={require('../../assets/img/img181.png')} />
                         </View>

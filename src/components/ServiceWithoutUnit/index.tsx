@@ -4,7 +4,6 @@ import { styles } from "./style"
 import { formatCEP } from "../../helpers/formatCEP"
 import { formatFixPhoneNumber } from "../../helpers/formatFixPhoneNumber"
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { Foundation } from '@expo/vector-icons';
 import { theme } from "../../theme/theme"
 
 const ServiceWithoutUnit = () => {
@@ -45,7 +44,7 @@ const ServiceWithoutUnit = () => {
                     style={styles.btnCellphone} 
                     onPress={() => Linking.openURL(`tel:${service.phoneNumber}`)}>
                     <Text style={{color: theme.colors.primaryWhite}}>Ligar</Text>
-                    <Foundation name="telephone" style={styles.iconCellphone} />
+                    <Ionicons name="person" style={styles.iconCellphone} />
                 </TouchableOpacity>
 
                 <TouchableOpacity 

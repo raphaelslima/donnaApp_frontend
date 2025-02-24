@@ -46,7 +46,7 @@ const UnitService = ({item}: props) => {
                     style={styles.btnCellphone} 
                     onPress={() => Linking.openURL(`tel:${item.phoneNumber}`)}>
                     <Text style={{color: theme.colors.primaryWhite}}>Ligar</Text>
-                    <Foundation name="telephone" style={styles.iconCellphone} />
+                    <Ionicons name="person" style={styles.iconCellphone} />
                 </TouchableOpacity>
 
                 <TouchableOpacity 
