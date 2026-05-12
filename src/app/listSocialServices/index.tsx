@@ -22,6 +22,7 @@ const listSocialServices = () => {
           data={services}
           keyExtractor={(item) => item.id}
           renderItem={(item) => <ItemListSocialService {...item} />}
+          //renderItem={({ item }) => <ItemListSocialService item={item} />}
         />
       </View>
     </Container>

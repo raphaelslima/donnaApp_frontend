@@ -34,11 +34,12 @@ export const services = [
             cep: 34580320
         },
         site: '',
-        email: '',
+        email: '',        
+        googleMaps: '',        
         units: [
             {
                 name: 'CRAS - Unidade Centro',
-                phoneNumber: '3136729046',
+                phoneNumber: 3136729046,
                 address: {
                     street: ' R. Mestra Ritinha',
                     district: 'Centro',
