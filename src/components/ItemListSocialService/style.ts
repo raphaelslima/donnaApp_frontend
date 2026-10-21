@@ -7,11 +7,11 @@ export const styles = StyleSheet.create({
     width: "100%",
     marginBottom: 20,
     borderRadius: 8,
-    height: 80,
+    minHeight: 80,
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "flex-start",
     flexWrap: "wrap",
   },
   item: {
@@ -26,9 +26,15 @@ export const styles = StyleSheet.create({
   TextItem: {
     fontFamily: theme.font.fontWeight.regular,
     fontSize: 12,
-    display: "flex",
-    flexWrap: "wrap",
-    width: "80%",
+  },
+  itemText: {
+    flex: 1,
+    gap: 4,
+  },
+  categoryText: {
+    fontFamily: theme.font.fontWeight.regular,
+    fontSize: 10,
+    color: theme.colors.primaryPurple,
   },
   iconItem: {
     color: theme.colors.primaryPurple,

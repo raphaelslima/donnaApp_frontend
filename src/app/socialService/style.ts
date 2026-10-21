@@ -5,6 +5,7 @@ export const styles = StyleSheet.create({
   containerService: {
     width: "100%",
     padding: 16,
+    flexGrow: 1,
   },
   btnBack: {
     width: "100%",

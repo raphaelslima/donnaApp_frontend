@@ -19,11 +19,14 @@ const ItemListSocialService = ({item} : Props) => {
     return (
         <TouchableOpacity style={styles.containerItem} onPress={() => handleGetToService(item.id)}>
             <View style={styles.item}>
-                {item.category === 'security' ? 
+                {item.category.startsWith('Segurança') ? 
                 <Ionicons name="shield" style={styles.iconItem}/> 
                 : 
                 <Ionicons name="person" style={styles.iconItem}/>}
-                <Text style={styles.TextItem} >{item.descriptionName} - ({item.name})</Text>
+                <View style={styles.itemText}>
+                    <Text style={styles.TextItem}>{item.name}</Text>
+                    <Text style={styles.categoryText}>{item.category}</Text>
+                </View>
             </View>
         </TouchableOpacity>
     )

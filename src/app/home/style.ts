@@ -33,6 +33,16 @@ export const styles = StyleSheet.create({
     marginTop: 16,
     marginBottom: 16,
   },
+  homeTitleRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  btnProfile: {
+    backgroundColor: theme.colors.primaryPurple,
+    borderRadius: 24,
+    padding: 10,
+  },
   subtitle: {
     color: theme.colors.primaryWhite,
     fontFamily: theme.font.fontWeight.bold,
@@ -74,6 +84,22 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    marginBottom: 12,
+  },
+  btnPolicy: {
+    width: 180,
+    backgroundColor: theme.colors.primaryPurple,
+    padding: 16,
+    borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+    gap: 8,
+  },
+  btnPolicyText: {
+    color: theme.colors.primaryWhite,
+    fontFamily: theme.font.fontWeight.bold,
+    fontSize: 16,
   },
   sessionBtn: {
     height: "50%",

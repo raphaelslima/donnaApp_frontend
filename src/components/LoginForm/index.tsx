@@ -9,15 +9,16 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Link, useRouter } from "expo-router";
-import { validateCPF } from "../../helpers/validateCPF";
-import { formatCPF } from "../../helpers/formatCPF";
+import api from "../../services/axios";
+import { saveAuthToken } from "../../services/auth";
+import { getBrazilianNationalPhoneDigits } from "../../helpers/phoneInput";
 
 const schema = yup.object({
-  cpf: yup
+  phone: yup
     .string()
-    .required("Informe seu cpf.")
-    .test("ValidationCPF", "CPF inválido.", function (value) {
-      return validateCPF(value);
+    .required("Informe seu telefone com DDD.")
+    .test("Phone", "Informe um telefone válido com DDD.", (value) => {
+      return /^\d{10,11}$/.test(value || "");
     }),
   password: yup
     .string()
@@ -29,11 +30,10 @@ const Form = () => {
   const {
     control,
     handleSubmit,
-    setValue,
-    clearErrors,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
+    defaultValues: { phone: "", password: "" },
   });
 
   const router = useRouter();
@@ -47,36 +47,46 @@ const Form = () => {
     return null;
   }
 
-  const handleSign = (data: any) => {
-    console.log(data);
-    Alert.alert("Bem vindo (a)", "Você logou no donaApp.");
-    router.push("/home");
-    return;
+  const handleSign = async (data: any) => {
+    try {
+      const response = await api.post("/auth/login", {
+        phone: `+55${data.phone}`,
+        password: data.password,
+      });
+      await saveAuthToken(response.data.token);
+      Alert.alert("Bem vindo(a)", "Login realizado com sucesso.");
+      router.replace("/home");
+    } catch (error: any) {
+      Alert.alert(
+        "Não foi possível entrar",
+        error.response?.data?.error || "Verifique sua conexão e tente novamente."
+      );
+    }
   };
 
   return (
     <View style={styles.containerForm}>
       <View>
-        <Text style={styles.label}>Digite seu CPF:</Text>
+        <Text style={styles.label}>Digite seu telefone com DDD:</Text>
 
         <Controller
           control={control}
-          name="cpf"
+          name="phone"
           render={({ field: { onChange, value } }) => (
-            <TextInput
-              style={styles.input}
-              keyboardType={"phone-pad"}
-              value={value}
-              onChangeText={(value) => {
-                onChange(value);
-                value.length === 11 && setValue("cpf", formatCPF(value));
-                validateCPF(value) && clearErrors("cpf");
-              }}
-            />
+            <View style={[styles.input, { flexDirection: "row", alignItems: "center" }]}>
+              <Text style={{ marginRight: 6 }}>+55</Text>
+              <TextInput
+                style={{ flex: 1, padding: 0 }}
+                keyboardType="phone-pad"
+                value={value}
+                onChangeText={(text) => onChange(getBrazilianNationalPhoneDigits(text))}
+                maxLength={11}
+              />
+            </View>
           )}
         />
-        {errors.cpf && (
-          <Text style={styles.msgError}>{errors.cpf.message}</Text>
+        {errors.phone && (
+          <Text style={styles.msgError}>{errors.phone.message}</Text>
         )}
       </View>
 

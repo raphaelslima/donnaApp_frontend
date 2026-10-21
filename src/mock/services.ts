@@ -1,192 +1,183 @@
-export const services = [
-    {
-        id: '1',
-        name: 'DEAM',
-        descriptionName: 'Delegacia especializada em atendimento a mulher',
-        descriptionService: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus placerat a augue ac euismod. Cras ut urna a nisi commodo laoreet ',
-        category: 'security',
-        phoneNumber: 3132577817,
-        address: {
-            street: 'Avenida João Pinheiro da Silva',
-            district: 'Esplanada',
-            number: 25,
-            city: 'Sabará',
-            uf: 'MG',
-            cep: 34515440
-        },
-        site: '',
-        email: '',
-        googleMaps: 'https://maps.app.goo.gl/oLsqXgtZrtSV9v8o8'
-    },
-    {
-        id: '2',
-        name: 'CRAS',
-        descriptionName: 'Centro de referência de Assistência Social',
-        descriptionService: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus placerat a augue ac euismod. Cras ut urna a nisi commodo laoreet r',
-        category: 'assistance',
-        phoneNumber: 3136729046,
-        address: {
-            street: 'R. Santos Dumont',
-            district: ' Gen. Carneiro',
-            number: 588,
-            city: 'Sabará',
-            uf: 'MG',
-            cep: 34580320
-        },
-        site: '',
-        email: '',        
-        googleMaps: '',        
-        units: [
-            {
-                name: 'CRAS - Unidade Centro',
-                phoneNumber: 3136729046,
-                address: {
-                    street: ' R. Mestra Ritinha',
-                    district: 'Centro',
-                    number: 255,
-                    city: 'Sabará',
-                    uf: 'MG',
-                    cep: 34505020
-                },
-                site: '',
-                email: '',
-                googleMaps: 'https://maps.app.goo.gl/oLsqXgtZrtSV9v8o8'
-            },
-            {
-                name: 'CRAS - Unidade Roça Grande',
-                phoneNumber: 3136745496,
-                address: {
-                    street: ' R. Santa Maria',
-                    district: 'Santana',
-                    number: 63,
-                    city: 'Sabará',
-                    uf: 'MG',
-                    cep: 34545760
-                },
-                site: '',
-                email: '',
-                googleMaps: 'https://maps.app.goo.gl/oLsqXgtZrtSV9v8o8'
-            },
-        ]
-    },
-    {
-        id: '15',
-        name: 'DEAM',
-        descriptionName: 'Delegacia especializada em atendimento a mulher',
-        descriptionService: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus placerat a augue ac euismod. Cras ut urna a nisi commodo laoreet ',
-        category: 'security',
-        phoneNumber: 3132577817,
-        address: {
-            street: 'Avenida João Pinheiro da Silva',
-            district: 'Esplanada',
-            number: 25,
-            city: 'Sabará',
-            uf: 'MG',
-            cep: 34515440
-        },
-        site: '',
-        email: '',
-        googleMaps: 'https://maps.app.goo.gl/oLsqXgtZrtSV9v8o8'
-    },
-    {
-        id: '14',
-        name: 'DEAM',
-        descriptionName: 'Delegacia especializada em atendimento a mulher',
-        descriptionService: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus placerat a augue ac euismod. Cras ut urna a nisi commodo laoreet ',
-        category: 'security',
-        phoneNumber: 3132577817,
-        address: {
-            street: 'Avenida João Pinheiro da Silva',
-            district: 'Esplanada',
-            number: 25,
-            city: 'Sabará',
-            uf: 'MG',
-            cep: 34515440
-        },
-        site: '',
-        email: '',
-        googleMaps: 'https://maps.app.goo.gl/oLsqXgtZrtSV9v8o8'
-    },
-    {
-        id: '13',
-        name: 'DEAM',
-        descriptionName: 'Delegacia especializada em atendimento a mulher',
-        descriptionService: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus placerat a augue ac euismod. Cras ut urna a nisi commodo laoreet ',
-        category: 'security',
-        phoneNumber: 3132577817,
-        address: {
-            street: 'Avenida João Pinheiro da Silva',
-            district: 'Esplanada',
-            number: 25,
-            city: 'Sabará',
-            uf: 'MG',
-            cep: 34515440
-        },
-        site: '',
-        email: '',
-        googleMaps: 'https://maps.app.goo.gl/oLsqXgtZrtSV9v8o8'
-    },
-    {
-        id: '12',
-        name: 'DEAM',
-        descriptionName: 'Delegacia especializada em atendimento a mulher',
-        descriptionService: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus placerat a augue ac euismod. Cras ut urna a nisi commodo laoreet ',
-        category: 'security',
-        phoneNumber: 3132577817,
-        address: {
-            street: 'Avenida João Pinheiro da Silva',
-            district: 'Esplanada',
-            number: 25,
-            city: 'Sabará',
-            uf: 'MG',
-            cep: 34515440
-        },
-        site: '',
-        email: '',
-        googleMaps: 'https://maps.app.goo.gl/oLsqXgtZrtSV9v8o8'
-    },
-    {
-        id: '100',
-        name: 'DEAM',
-        descriptionName: 'Delegacia especializada em atendimento a mulher',
-        descriptionService: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus placerat a augue ac euismod. Cras ut urna a nisi commodo laoreet ',
-        category: 'security',
-        phoneNumber: 3132577817,
-        address: {
-            street: 'Avenida João Pinheiro da Silva',
-            district: 'Esplanada',
-            number: 25,
-            city: 'Sabará',
-            uf: 'MG',
-            cep: 34515440
-        },
-        site: '',
-        email: '',
-        googleMaps: 'https://maps.app.goo.gl/oLsqXgtZrtSV9v8o8'
-    },
-    {
-        id: '10',
-        name: 'DEAM',
-        descriptionName: 'Delegacia especializada em atendimento a mulher',
-        descriptionService: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus placerat a augue ac euismod. Cras ut urna a nisi commodo laoreet ',
-        category: 'security',
-        phoneNumber: 3132577817,
-        address: {
-            street: 'Avenida João Pinheiro da Silva',
-            district: 'Esplanada',
-            number: 25,
-            city: 'Sabará',
-            uf: 'MG',
-            cep: 34515440
-        },
-        site: '',
-        email: '',
-        googleMaps: 'https://maps.app.goo.gl/oLsqXgtZrtSV9v8o8'
-    },
-// 2 -  Delegacias (3 unidades)
-// 3 - Polícia Militar (2 unidades)
-// 5 - CREAS
-// 6 - Conselho Tutelar
-// 7 - UBS (3 unidades)
-//  8 - Ministério Público de Sabará
-]
+import { socialService } from "../interfaces/socialService";
+
+export const services: socialService[] = [
+  {
+    id: "1",
+    name: "Polícia Militar de Minas Gerais - Patrulha de Prevenção à Violência Doméstica (PPVD)",
+    category: "Segurança pública e proteção à mulher",
+    phoneNumbers: ["(31) 97333-0650"],
+  },
+  {
+    id: "2",
+    name: "Polícia Civil de Minas Gerais - Delegacia Especializada de Atendimento à Mulher (DEAM)",
+    category: "Segurança pública e proteção à mulher",
+    address: "Avenida João Pinheiro, 25, Bairro Morada da Serra",
+    phoneNumbers: ["(31) 3674-1528", "(31) 99400-0769"],
+  },
+  {
+    id: "3",
+    name: "Guarda Civil Sabará (GM) - Patrulha Guardiã da Mulher",
+    category: "Segurança pública e proteção à mulher",
+    address: "Avenida Expedicionário Romeu Jerônimo Dantas, s/n, Bairro Caieira",
+    phoneNumbers: ["(31) 99949-3208", "153"],
+  },
+  {
+    id: "4",
+    name: "Secretaria Municipal de Desenvolvimento Social",
+    category: "Órgãos da prefeitura, gestão pública e conselhos",
+    address: "Rua Comendador Viana, 119, Centro - Sabará/MG (CEP: 34505-340)",
+    phoneNumbers: ["(31) 3672-7719", "(31) 3671-1518"],
+  },
+  {
+    id: "5",
+    name: "Coordenadoria Municipal de Políticas Públicas para as Mulheres",
+    category: "Órgãos da prefeitura, gestão pública e conselhos",
+    address: "Rua Comendador Viana, 119, Centro - Sabará/MG",
+    phoneNumbers: ["(31) 98375-8235", "(31) 3672-7715"],
+  },
+  {
+    id: "6",
+    name: "Conselho Municipal da Mulher Sabará",
+    category: "Órgãos da prefeitura, gestão pública e conselhos",
+    address: "Rua Comendador Viana, 119, Centro - Sabará/MG",
+    phoneNumbers: ["(31) 3674-1818"],
+  },
+  {
+    id: "7",
+    name: "CREAS - Centro de Referência Especializado de Assistência Social",
+    category: "Assistência social especializada",
+    coordinator: "Gabriela Farias Costa",
+    address: "Rua Sétimo de Paula Rocha, 112, Centro - Sabará/MG",
+    phoneNumbers: ["(31) 3672-7696"],
+    email: "creas@sabara.mg.gov.br",
+  },
+  {
+    id: "8",
+    name: "CRAS Ravena",
+    category: "Assistência social especializada",
+    coordinator: "Greicilene Ferreira de Oliveira",
+    address: "Largo do Rosário, nº 164, Ravena",
+    phoneNumbers: ["(31) 3672-3649 (Ramal 1522)"],
+    email: "cras.ravena@sabara.mg.gov.br",
+  },
+  {
+    id: "9",
+    name: "CRAS Borba Gato",
+    category: "Assistência social especializada",
+    coordinator: "Gabriela Vitória Brito",
+    address: "Rua Adair Siqueira de Queiroz, nº 8, Borba Gato",
+    phoneNumbers: ["(31) 3691-6402 (Ramais 1519 e 1518)"],
+    email: "cras.borbagato@sabara.mg.gov.br",
+  },
+  {
+    id: "10",
+    name: "CRAS Alvorada",
+    category: "Assistência social especializada",
+    coordinator: "Danielle Alves Pereira Soares",
+    address: "Rua Campanha, nº 55, Alvorada",
+    phoneNumbers: ["(31) 3485-2972 (Ramais 1510 e 1575)"],
+    email: "cras.alvorada@sabara.mg.gov.br",
+  },
+  {
+    id: "11",
+    name: "CRAS Fátima",
+    category: "Assistência social especializada",
+    coordinator: "Viviane Rocha Castro Pereira",
+    address: "Rua Monte Carmelo, nº 421, Nossa Senhora de Fátima",
+    phoneNumbers: ["(31) 3673-2183 (Ramais 1512 e 1513)"],
+    email: "cras.fatima@sabara.mg.gov.br",
+  },
+  {
+    id: "12",
+    name: "CRAS Castanheiras",
+    category: "Assistência social especializada",
+    coordinator: "Raquel Conrado",
+    address: "Rua Prudente de Morais, s/nº, Castanheiras",
+    phoneNumbers: ["(31) 3671-4572 (Ramais 1530 e 1545)"],
+    email: "cras.castanheiras@sabara.mg.gov.br",
+  },
+  {
+    id: "13",
+    name: "CRAS Estação Cidadania",
+    category: "Assistência social especializada",
+    coordinator: "Nayara Mary da Silva Pena Bento",
+    address: "Rua Amazonas, nº 15, Vila Rica",
+    phoneNumbers: ["(31) 3675-1438"],
+    email: "cras.estacaocidadania@sabara.mg.gov.br",
+  },
+  {
+    id: "14",
+    name: "CRAS General Carneiro",
+    category: "Assistência social especializada",
+    coordinator: "Marcilene Basilio Gonçalves",
+    address: "Rua Heliodora, nº 256 A, Itacolomi",
+    phoneNumbers: ["(31) 3672-9046"],
+    email: "cras.generalcarneiro@sabara.mg.gov.br",
+  },
+  {
+    id: "15",
+    name: "CRAS Roça Grande",
+    category: "Assistência social especializada",
+    coordinator: "Priscila Silva Cunha",
+    address: "Av. Dr. Henrique de Melo, 245 - Santo Antônio (Roça Grande), Sabará/MG (CEP: 34535-230)",
+    phoneNumbers: ["(31) 3674-5496"],
+    email: "cras.rocagrande@sabara.mg.gov.br",
+  },
+  {
+    id: "16",
+    name: "CRAS Centro",
+    category: "Assistência social especializada",
+    coordinator: "Dandara",
+    address: "Rua Comendador Viana, nº 139, Centro",
+    phoneNumbers: ["(31) 3671-4402"],
+    email: "cras.centro@sabara.mg.gov.br",
+  },
+  {
+    id: "17",
+    name: "Fórum da Justiça - Sabará MG",
+    category: "Justiça, jurídico e legislação",
+    address: "Praça Melo Viana, 71 - Centro, Sabará/MG",
+    phoneNumbers: ["(31) 3671-1247"],
+  },
+  {
+    id: "18",
+    name: "Ministério Público de Sabará",
+    category: "Justiça, jurídico e legislação",
+    address: "Praça Melo Viana, 99 - Centro, Sabará/MG",
+    phoneNumbers: ["(31) 3674-3678"],
+  },
+  {
+    id: "19",
+    name: "114ª Subseção da OAB MG Sabará",
+    category: "Justiça, jurídico e legislação",
+    address: "Rua Comendador Viana, 214 - Centro, Sabará/MG",
+    phoneNumbers: ["(31) 3671-1116"],
+  },
+  {
+    id: "20",
+    name: "Comissão Permanente do Direito das Mulheres e Procuradoria da Mulher",
+    category: "Justiça, jurídico e legislação",
+    address: "Rua Borba Gato, 74 - Centro, Sabará/MG",
+    phoneNumbers: ["(31) 3671-1122"],
+  },
+  {
+    id: "21",
+    name: "Instituto Casa Vida (Casa Rosa)",
+    category: "Organizações assistenciais e projetos",
+    address: "Rua Professor Francisco Lopes Azeredo, 70, Centro - Sabará/MG",
+    phoneNumbers: ["(31) 99233-1317"],
+  },
+  {
+    id: "22",
+    name: "Núcleo Assistencial Veleiro da Esperança (NAVE)",
+    category: "Organizações assistenciais e projetos",
+    address: "Rua Diana, 299 - Carvalho de Brito, Sabará/MG (CEP: 34710-210)",
+    phoneNumbers: ["(31) 99934-1717"],
+  },
+  {
+    id: "23",
+    name: "Projeto ComPaixão",
+    category: "Organizações assistenciais e projetos",
+    phoneNumbers: ["(31) 98833-9896"],
+  },
+];

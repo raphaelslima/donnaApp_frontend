@@ -1,60 +1,66 @@
 import { Linking, Text, TouchableOpacity, View } from "react-native"
-import { services } from "../../mock/services"
 import { styles } from "./style"
-import { formatCEP } from "../../helpers/formatCEP"
-import { formatFixPhoneNumber } from "../../helpers/formatFixPhoneNumber"
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { theme } from "../../theme/theme"
+import { socialService } from "../../interfaces/socialService"
 
-const ServiceWithoutUnit = () => {
+interface Props {
+    service: socialService
+}
 
-    const service = services[0]
+const ServiceWithoutUnit = ({ service }: Props) => {
 
-    const formatAddress = () => {
-        return `${service.address.street}, ${service.address.number} - ${service.address.district}, ${service.address.city} - ${service.address.uf}, ${formatCEP(service.address.cep)}`
+    const getDialableNumber = (phoneNumber: string) => {
+        return phoneNumber.replace(/\s*\((?:Ramal|Ramais).*$/i, "").replace(/\D/g, "")
     }
 
     return (
         <View style={styles.containerService}>
+            <Text style={styles.title}>{service.name}</Text>
+
+            {service.address && (
+                <View>
+                    <Text style={styles.subtitle}>Endereço</Text>
+                    <Text style={styles.textInfo}>{service.address}</Text>
+                    <Text
+                        style={styles.textMaps}
+                        onPress={() => Linking.openURL(
+                            `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(service.address!)}`
+                        )}
+                    >
+                        Ver no Google Maps
+                    </Text>
+                </View>
+            )}
+
+            {service.coordinator && (
+                <View>
+                    <Text style={styles.subtitle}>Coordenadora</Text>
+                    <Text style={styles.textInfo}>{service.coordinator}</Text>
+                </View>
+            )}
 
             <View>
-                <Text style={styles.title}>{service.descriptionName}</Text>
-                <Text style={styles.description} >{service.descriptionService}</Text>
+                <Text style={styles.subtitle}>Telefone</Text>
+                {service.phoneNumbers.map((phoneNumber) => (
+                    <TouchableOpacity
+                        key={phoneNumber}
+                        onPress={() => Linking.openURL(`tel:${getDialableNumber(phoneNumber)}`)}
+                    >
+                        <Text style={styles.textInfo}>{phoneNumber}</Text>
+                    </TouchableOpacity>
+                ))}
             </View>
 
-            <View>
-                <Text>{service.site}</Text>
-            </View>
-
-            <View>
-                <Text style={styles.subtitle}  >Como chegar:</Text>
-                <Text style={styles.textInfo}>{formatAddress()}</Text>
-                <Text style={styles.textMaps} onPress={()=> Linking.openURL(`${service.googleMaps}`)}>Ir para o Google maps</Text>
-            </View>
-
-            <View>
-            <Text style={styles.subtitle}  >Contatos</Text>
-            <Text>{formatFixPhoneNumber(service.phoneNumber)}</Text>
-            <Text style={styles.textInfo}>{service.email}</Text>
-            </View>
-
-            <View style={styles.btnSession}>
-
-            <TouchableOpacity 
-                    style={styles.btnCellphone} 
-                    onPress={() => Linking.openURL(`tel:${service.phoneNumber}`)}>
-                    <Text style={{color: theme.colors.primaryWhite}}>Ligar</Text>
-                    <Ionicons name="person" style={styles.iconCellphone} />
-                </TouchableOpacity>
-
-                <TouchableOpacity 
-                    style={styles.btnWpp} 
-                    onPress={() => Linking.openURL('whatsapp://send?text=teste&phone=31996001712')}>
-                    <Text style={{color: theme.colors.primaryWhite}}>WhatsApp</Text>
-                    <Ionicons name="logo-whatsapp" style={styles.iconWpp}/>
-                </TouchableOpacity>
-            </View>
-            
+            {service.email && (
+                <View>
+                    <Text style={styles.subtitle}>E-mail</Text>
+                    <Text
+                        style={styles.textMaps}
+                        onPress={() => Linking.openURL(`mailto:${service.email}`)}
+                    >
+                        {service.email}
+                    </Text>
+                </View>
+            )}
         </View>
     )
 }
