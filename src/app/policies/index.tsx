@@ -6,6 +6,7 @@ import { useFonts, Inter_400Regular, Inter_700Bold } from "@expo-google-fonts/in
 
 const policyOptions = [
   { title: "Agendamento no CRAS", path: "/cras-appointment", icon: "calendar" },
+  { title: "Cadastrar medida protetiva", path: "/protective-measure", icon: "shield-checkmark" },
 ];
 
 const Policies = () => {

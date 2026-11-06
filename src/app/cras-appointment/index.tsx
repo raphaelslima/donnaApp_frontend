@@ -13,13 +13,14 @@ import { Picker } from "@react-native-picker/picker";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useRouter } from "expo-router";
 import { services } from "../../mock/services";
+import { getBrazilianNationalPhoneDigits } from "../../helpers/phoneInput";
 import api from "../../services/axios";
 import { theme } from "../../theme/theme";
 import { styles } from "./style";
 
 interface ProfileContact {
   email?: string;
-  telefone: string;
+  telefone?: string;
 }
 
 const getInitialDate = () => {
@@ -37,6 +38,7 @@ const AppointmentScreen = () => {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [email, setEmail] = useState("");
+  const [telephone, setTelephone] = useState("");
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -49,6 +51,7 @@ const AppointmentScreen = () => {
         const user = response.data.user as ProfileContact;
         setProfile(user);
         setEmail(user.email || "");
+        setTelephone(getBrazilianNationalPhoneDigits(user.telefone || ""));
       } catch (error: any) {
         setLoadError(true);
         Alert.alert(
@@ -76,6 +79,10 @@ const AppointmentScreen = () => {
       Alert.alert("E-mail inválido", "Informe um e-mail válido para o contato.");
       return;
     }
+    if (!/^\d{10,11}$/.test(telephone)) {
+      Alert.alert("Telefone inválido", "Informe um telefone válido com DDD para o contato.");
+      return;
+    }
 
     setSubmitting(true);
     try {
@@ -85,7 +92,7 @@ const AppointmentScreen = () => {
         crasAddress: unit.address || "",
         dateTime: dateTime.toISOString(),
         email: email.trim(),
-        telephone: profile?.telefone,
+        telephone,
       });
       Alert.alert(
         "Solicitação registrada",
@@ -188,6 +195,16 @@ const AppointmentScreen = () => {
           />
         )}
         <View style={styles.field}>
+          <Text style={styles.label}>Telefone para contato (com DDD):</Text>
+          <TextInput
+            style={styles.input}
+            value={telephone}
+            onChangeText={(value) => setTelephone(getBrazilianNationalPhoneDigits(value))}
+            keyboardType="phone-pad"
+            maxLength={11}
+          />
+        </View>
+        <View style={styles.field}>
           <Text style={styles.label}>E-mail para contato:</Text>
           <TextInput
             style={styles.input}
@@ -197,9 +214,6 @@ const AppointmentScreen = () => {
             autoCapitalize="none"
           />
         </View>
-        <Text style={styles.telephone}>
-          Telefone informado no cadastro: {profile.telefone}
-        </Text>
         <Text style={styles.note}>
           Esta tela registra uma solicitação. A data e o horário ainda precisam ser confirmados com a unidade.
         </Text>

@@ -46,6 +46,10 @@ export const styles = StyleSheet.create({
     padding: 12,
     color: theme.colors.primaryBlack,
   },
+  pickerContainer: {
+    backgroundColor: "#eeeeee",
+    borderRadius: 8,
+  },
   field: {
     marginBottom: 12,
   },

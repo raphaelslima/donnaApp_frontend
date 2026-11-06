@@ -10,9 +10,11 @@ import {
   View,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { Picker } from "@react-native-picker/picker";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useRouter } from "expo-router";
-import { validateCPF } from "../../helpers/validateCPF";
+import { getBrazilianNationalPhoneDigits } from "../../helpers/phoneInput";
+import { genderTypes } from "../../helpers/genderTypes";
 import api from "../../services/axios";
 import { clearAuthToken } from "../../services/auth";
 import { theme } from "../../theme/theme";
@@ -23,7 +25,7 @@ interface Profile {
   sobrenome?: string;
   dataNascimento?: string;
   genero?: string;
-  cpf?: string;
+  telefone?: string;
   cep?: string;
   rua?: string;
   estado?: string;
@@ -33,15 +35,14 @@ interface Profile {
   pontoReferencia?: string;
   numeroCasa?: string;
   email?: string;
-  telefone: string;
 }
 
-type ProfileField = Exclude<keyof Profile, "telefone" | "dataNascimento">;
+type ProfileField = Exclude<keyof Profile, "dataNascimento">;
 
 const profileFields: { key: ProfileField; label: string; keyboardType?: KeyboardTypeOptions }[] = [
   { key: "nome", label: "Nome" },
   { key: "sobrenome", label: "Sobrenome" },
-  { key: "cpf", label: "CPF", keyboardType: "numeric" },
+  { key: "telefone", label: "Número de telefone com DDD", keyboardType: "phone-pad" },
   { key: "genero", label: "Gênero" },
   { key: "cep", label: "CEP", keyboardType: "numeric" },
   { key: "rua", label: "Rua" },
@@ -59,7 +60,7 @@ const emptyProfile = (): Profile => ({
   sobrenome: "",
   dataNascimento: "",
   genero: "",
-  cpf: "",
+  telefone: "",
   cep: "",
   rua: "",
   estado: "",
@@ -69,7 +70,6 @@ const emptyProfile = (): Profile => ({
   pontoReferencia: "",
   numeroCasa: "",
   email: "",
-  telefone: "",
 });
 
 const ProfileScreen = () => {
@@ -113,9 +113,9 @@ const ProfileScreen = () => {
       Alert.alert("E-mail inválido", "Confira o formato do e-mail informado.");
       return;
     }
-    const cpf = profile.cpf?.trim() || "";
-    if (cpf && !validateCPF(cpf)) {
-      Alert.alert("CPF inválido", "Confira o CPF informado.");
+    const telefone = getBrazilianNationalPhoneDigits(profile.telefone || "");
+    if (telefone && !/^\d{10,11}$/.test(telefone)) {
+      Alert.alert("Telefone inválido", "Informe um telefone válido com DDD.");
       return;
     }
     const cep = profile.cep?.replace(/\D/g, "") || "";
@@ -130,7 +130,7 @@ const ProfileScreen = () => {
         ...profile,
         dataNascimento: dateOfBirth?.toISOString() || "",
         email,
-        cpf: cpf.replace(/\D/g, ""),
+        telefone,
         cep,
       });
       setProfile({ ...emptyProfile(), ...response.data.user });
@@ -176,12 +176,6 @@ const ProfileScreen = () => {
         <Text style={styles.introduction}>
           Os campos são opcionais. Preencha o que desejar e salve para atualizar seu perfil.
         </Text>
-        <Text style={styles.label}>Telefone de acesso</Text>
-        <TextInput
-          style={[styles.input, styles.dateInput]}
-          value={profile.telefone}
-          editable={false}
-        />
         <Text style={styles.label}>Data de nascimento</Text>
         <TouchableOpacity
           style={styles.dateButton}
@@ -210,13 +204,33 @@ const ProfileScreen = () => {
         {profileFields.map(({ key, label, keyboardType }) => (
           <View key={key} style={styles.field}>
             <Text style={styles.label}>{label}</Text>
-            <TextInput
-              style={styles.input}
-              value={profile[key] || ""}
-              onChangeText={(value) => updateField(key, value)}
-              keyboardType={keyboardType}
-              autoCapitalize={key === "email" ? "none" : "sentences"}
-            />
+            {key === "genero" ? (
+              <View style={styles.pickerContainer}>
+                <Picker
+                  selectedValue={profile.genero || ""}
+                  onValueChange={(value) => updateField("genero", value)}
+                >
+                  <Picker.Item label="Selecione uma opção" value="" />
+                  {genderTypes.map(({ label: optionLabel, value }) => (
+                    <Picker.Item key={value} label={optionLabel} value={value} />
+                  ))}
+                </Picker>
+              </View>
+            ) : (
+              <TextInput
+                style={styles.input}
+                value={key === "telefone" ? getBrazilianNationalPhoneDigits(profile.telefone || "") : profile[key] || ""}
+                onChangeText={(value) =>
+                  updateField(
+                    key,
+                    key === "telefone" ? getBrazilianNationalPhoneDigits(value) : value
+                  )
+                }
+                keyboardType={keyboardType}
+                maxLength={key === "telefone" ? 11 : undefined}
+                autoCapitalize={key === "email" ? "none" : "sentences"}
+              />
+            )}
           </View>
         ))}
         <TouchableOpacity

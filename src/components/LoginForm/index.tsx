@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { styles } from "./style";
 import {
@@ -11,15 +12,13 @@ import * as yup from "yup";
 import { Link, useRouter } from "expo-router";
 import api from "../../services/axios";
 import { saveAuthToken } from "../../services/auth";
-import { getBrazilianNationalPhoneDigits } from "../../helpers/phoneInput";
+import { validateCPF } from "../../helpers/validateCPF";
 
 const schema = yup.object({
-  phone: yup
+  cpf: yup
     .string()
-    .required("Informe seu telefone com DDD.")
-    .test("Phone", "Informe um telefone válido com DDD.", (value) => {
-      return /^\d{10,11}$/.test(value || "");
-    }),
+    .required("Informe seu CPF.")
+    .test("CPF", "Informe um CPF válido.", (value) => validateCPF(value || "")),
   password: yup
     .string()
     .required("Informe sua senha.")
@@ -33,10 +32,11 @@ const Form = () => {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
-    defaultValues: { phone: "", password: "" },
+    defaultValues: { cpf: "", password: "" },
   });
 
   const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
 
   const [fontLoaded] = useFonts({
     Inter_400Regular,
@@ -47,10 +47,10 @@ const Form = () => {
     return null;
   }
 
-  const handleSign = async (data: any) => {
+  const handleSign = async (data: { cpf: string; password: string }) => {
     try {
       const response = await api.post("/auth/login", {
-        phone: `+55${data.phone}`,
+        cpf: data.cpf.replace(/\D/g, ""),
         password: data.password,
       });
       await saveAuthToken(response.data.token);
@@ -67,26 +67,23 @@ const Form = () => {
   return (
     <View style={styles.containerForm}>
       <View>
-        <Text style={styles.label}>Digite seu telefone com DDD:</Text>
+        <Text style={styles.label}>Digite seu CPF:</Text>
 
         <Controller
           control={control}
-          name="phone"
+          name="cpf"
           render={({ field: { onChange, value } }) => (
-            <View style={[styles.input, { flexDirection: "row", alignItems: "center" }]}>
-              <Text style={{ marginRight: 6 }}>+55</Text>
-              <TextInput
-                style={{ flex: 1, padding: 0 }}
-                keyboardType="phone-pad"
-                value={value}
-                onChangeText={(text) => onChange(getBrazilianNationalPhoneDigits(text))}
-                maxLength={11}
-              />
-            </View>
+            <TextInput
+              style={styles.input}
+              keyboardType="numeric"
+              value={value}
+              onChangeText={(text) => onChange(text.replace(/\D/g, "").slice(0, 11))}
+              maxLength={11}
+            />
           )}
         />
-        {errors.phone && (
-          <Text style={styles.msgError}>{errors.phone.message}</Text>
+        {errors.cpf && (
+          <Text style={styles.msgError}>{errors.cpf.message}</Text>
         )}
       </View>
 
@@ -97,12 +94,21 @@ const Form = () => {
           control={control}
           name="password"
           render={({ field: { onChange, value } }) => (
-            <TextInput
-              style={styles.input}
-              value={value}
-              onChangeText={onChange}
-              secureTextEntry={true}
-            />
+            <View style={[styles.input, { flexDirection: "row", alignItems: "center" }]}>
+              <TextInput
+                style={{ flex: 1, padding: 0 }}
+                value={value}
+                onChangeText={onChange}
+                secureTextEntry={!showPassword}
+              />
+              <TouchableOpacity
+                onPress={() => setShowPassword((visible) => !visible)}
+                accessibilityRole="button"
+                accessibilityLabel={showPassword ? "Ocultar senha" : "Mostrar senha"}
+              >
+                <Text>{showPassword ? "Ocultar" : "Mostrar"}</Text>
+              </TouchableOpacity>
+            </View>
           )}
         />
         {errors.password && (

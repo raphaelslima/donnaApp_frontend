@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -6,21 +7,19 @@ import { useFonts, Inter_400Regular, Inter_700Bold } from "@expo-google-fonts/in
 import { useRouter } from "expo-router";
 import api from "../../services/axios";
 import { saveAuthToken } from "../../services/auth";
-import { getBrazilianNationalPhoneDigits } from "../../helpers/phoneInput";
 import { styles } from "./style";
+import { validateCPF } from "../../helpers/validateCPF";
 
 interface RegisterFormValues {
-  phone: string;
+  cpf: string;
   password: string;
 }
 
 const schema = yup.object({
-  phone: yup
+  cpf: yup
     .string()
-    .required("Informe seu telefone com DDD.")
-    .test("Phone", "Informe um telefone válido com DDD.", (value) => {
-      return /^\d{10,11}$/.test(value || "");
-    }),
+    .required("Informe seu CPF.")
+    .test("CPF", "Informe um CPF válido.", (value) => validateCPF(value || "")),
   password: yup
     .string()
     .required("Informe sua senha.")
@@ -34,15 +33,16 @@ const RegisterForm = () => {
     formState: { errors, isSubmitting },
   } = useForm<RegisterFormValues>({
     resolver: yupResolver(schema),
-    defaultValues: { phone: "", password: "" },
+    defaultValues: { cpf: "", password: "" },
   });
   const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
   const [fontLoaded] = useFonts({ Inter_400Regular, Inter_700Bold });
 
-  const handleRegister = async ({ phone, password }: RegisterFormValues) => {
+  const handleRegister = async ({ cpf, password }: RegisterFormValues) => {
     try {
       const response = await api.post("/users", {
-        phone: `+55${phone}`,
+        cpf: cpf.replace(/\D/g, ""),
         password,
       });
       await saveAuthToken(response.data.token);
@@ -64,24 +64,21 @@ const RegisterForm = () => {
     <View style={styles.containerFormRegister}>
       <View style={styles.containerFields}>
         <View style={styles.labelAndInputOnly}>
-          <Text style={styles.label}>Telefone com DDD:</Text>
+          <Text style={styles.label}>CPF:</Text>
           <Controller
             control={control}
-            name="phone"
+            name="cpf"
             render={({ field: { value, onChange } }) => (
-              <View style={[styles.inputHeight, { flexDirection: "row", alignItems: "center" }]}>
-                <Text style={{ marginRight: 6 }}>+55</Text>
-                <TextInput
-                  style={{ flex: 1, padding: 0 }}
-                  keyboardType="phone-pad"
-                  value={value}
-                  onChangeText={(text) => onChange(getBrazilianNationalPhoneDigits(text))}
-                  maxLength={11}
-                />
-              </View>
+              <TextInput
+                style={styles.inputHeight}
+                keyboardType="numeric"
+                value={value}
+                onChangeText={(text) => onChange(text.replace(/\D/g, "").slice(0, 11))}
+                maxLength={11}
+              />
             )}
           />
-          {errors.phone && <Text style={styles.erroMsg}>{errors.phone.message}</Text>}
+          {errors.cpf && <Text style={styles.erroMsg}>{errors.cpf.message}</Text>}
         </View>
         <View style={styles.labelAndInputOnly}>
           <Text style={styles.label}>Senha:</Text>
@@ -89,12 +86,21 @@ const RegisterForm = () => {
             control={control}
             name="password"
             render={({ field: { value, onChange } }) => (
-              <TextInput
-                style={styles.inputHeight}
-                value={value}
-                onChangeText={onChange}
-                secureTextEntry
-              />
+              <View style={[styles.inputHeight, { flexDirection: "row", alignItems: "center" }]}>
+                <TextInput
+                  style={{ flex: 1, padding: 0 }}
+                  value={value}
+                  onChangeText={onChange}
+                  secureTextEntry={!showPassword}
+                />
+                <TouchableOpacity
+                  onPress={() => setShowPassword((visible) => !visible)}
+                  accessibilityRole="button"
+                  accessibilityLabel={showPassword ? "Ocultar senha" : "Mostrar senha"}
+                >
+                  <Text>{showPassword ? "Ocultar" : "Mostrar"}</Text>
+                </TouchableOpacity>
+              </View>
             )}
           />
           {errors.password && <Text style={styles.erroMsg}>{errors.password.message}</Text>}
