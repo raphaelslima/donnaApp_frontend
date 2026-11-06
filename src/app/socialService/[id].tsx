@@ -1,14 +1,15 @@
 import { Link, useLocalSearchParams } from 'expo-router';
-import { Text, TouchableOpacity, View } from "react-native"
+import { ScrollView, Text, TouchableOpacity } from "react-native"
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { styles } from './style';
 import ServiceWithoutUnit from '../../components/ServiceWithoutUnit';
-import ServiceWithUnit from '../../components/ServiceWithUnit';
+import { services } from '../../mock/services';
 
 const SocialService = () => {
     const { id } = useLocalSearchParams<{ id: string }>();
+    const service = services.find((item) => item.id === id);
     return(
-        <View style={styles.containerService}>
+        <ScrollView contentContainerStyle={styles.containerService}>
             <Link href={'/listSocialServices'} asChild>
                 <TouchableOpacity style={styles.btnBack}>
                     <Ionicons name="arrow-back" style={styles.iconBack}/> 
@@ -16,9 +17,13 @@ const SocialService = () => {
                 </TouchableOpacity>
             </Link>
 
-            {id === '1' ? <ServiceWithoutUnit/>: <ServiceWithUnit/>}
+            {service ? (
+                <ServiceWithoutUnit service={service}/>
+            ) : (
+                <Text>Serviço não encontrado.</Text>
+            )}
             
-        </View>
+        </ScrollView>
     )
 }
 

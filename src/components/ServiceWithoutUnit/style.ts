@@ -3,6 +3,7 @@ import { theme } from "../../theme/theme";
 
 export const styles = StyleSheet.create({
     containerService:{
+        width: "100%",
         display: "flex",
         flexDirection: 'column',
         justifyContent: "center",

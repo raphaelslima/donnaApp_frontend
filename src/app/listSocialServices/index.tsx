@@ -17,7 +17,7 @@ const listSocialServices = () => {
       </Link>
 
       <View style={styles.containerListItemns}>
-        <Text style={styles.title}>Serviços assistenciais:</Text>
+        <Text style={styles.title}>Rede de atendimento:</Text>
         <FlatList
           data={services}
           keyExtractor={(item) => item.id}

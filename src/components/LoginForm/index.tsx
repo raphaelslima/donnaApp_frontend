@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Alert, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { styles } from "./style";
 import {
@@ -9,16 +10,15 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Link, useRouter } from "expo-router";
+import api from "../../services/axios";
+import { saveAuthToken } from "../../services/auth";
 import { validateCPF } from "../../helpers/validateCPF";
-import { formatCPF } from "../../helpers/formatCPF";
 
 const schema = yup.object({
   cpf: yup
     .string()
-    .required("Informe seu cpf.")
-    .test("ValidationCPF", "CPF inválido.", function (value) {
-      return validateCPF(value);
-    }),
+    .required("Informe seu CPF.")
+    .test("CPF", "Informe um CPF válido.", (value) => validateCPF(value || "")),
   password: yup
     .string()
     .required("Informe sua senha.")
@@ -29,14 +29,14 @@ const Form = () => {
   const {
     control,
     handleSubmit,
-    setValue,
-    clearErrors,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
+    defaultValues: { cpf: "", password: "" },
   });
 
   const router = useRouter();
+  const [showPassword, setShowPassword] = useState(false);
 
   const [fontLoaded] = useFonts({
     Inter_400Regular,
@@ -47,11 +47,21 @@ const Form = () => {
     return null;
   }
 
-  const handleSign = (data: any) => {
-    console.log(data);
-    Alert.alert("Bem vindo (a)", "Você logou no donaApp.");
-    router.push("/home");
-    return;
+  const handleSign = async (data: { cpf: string; password: string }) => {
+    try {
+      const response = await api.post("/auth/login", {
+        cpf: data.cpf.replace(/\D/g, ""),
+        password: data.password,
+      });
+      await saveAuthToken(response.data.token);
+      Alert.alert("Bem vindo(a)", "Login realizado com sucesso.");
+      router.replace("/home");
+    } catch (error: any) {
+      Alert.alert(
+        "Não foi possível entrar",
+        error.response?.data?.error || "Verifique sua conexão e tente novamente."
+      );
+    }
   };
 
   return (
@@ -65,13 +75,10 @@ const Form = () => {
           render={({ field: { onChange, value } }) => (
             <TextInput
               style={styles.input}
-              keyboardType={"phone-pad"}
+              keyboardType="numeric"
               value={value}
-              onChangeText={(value) => {
-                onChange(value);
-                value.length === 11 && setValue("cpf", formatCPF(value));
-                validateCPF(value) && clearErrors("cpf");
-              }}
+              onChangeText={(text) => onChange(text.replace(/\D/g, "").slice(0, 11))}
+              maxLength={11}
             />
           )}
         />
@@ -87,12 +94,21 @@ const Form = () => {
           control={control}
           name="password"
           render={({ field: { onChange, value } }) => (
-            <TextInput
-              style={styles.input}
-              value={value}
-              onChangeText={onChange}
-              secureTextEntry={true}
-            />
+            <View style={[styles.input, { flexDirection: "row", alignItems: "center" }]}>
+              <TextInput
+                style={{ flex: 1, padding: 0 }}
+                value={value}
+                onChangeText={onChange}
+                secureTextEntry={!showPassword}
+              />
+              <TouchableOpacity
+                onPress={() => setShowPassword((visible) => !visible)}
+                accessibilityRole="button"
+                accessibilityLabel={showPassword ? "Ocultar senha" : "Mostrar senha"}
+              >
+                <Text>{showPassword ? "Ocultar" : "Mostrar"}</Text>
+              </TouchableOpacity>
+            </View>
           )}
         />
         {errors.password && (

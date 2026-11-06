@@ -23,7 +23,17 @@ const Home = () => {
                 <View style={styles.headerContent}>
                 </View>
                 <View style={styles.headerTextAndActions}>
-                    <Text style={styles.title}>Sabará</Text>
+                    <View style={styles.homeTitleRow}>
+                        <Text style={styles.title}>Sabará</Text>
+                        <Link href="/profile" asChild>
+                            <TouchableOpacity
+                                accessibilityLabel="Abrir meu perfil"
+                                style={styles.btnProfile}
+                            >
+                                <Ionicons name="person" size={22} color={theme.colors.primaryWhite} />
+                            </TouchableOpacity>
+                        </Link>
+                    </View>
                     <Text style={styles.subtitle}>Qual serviço de assistência social você está buscando?</Text>
                     <Link href={'/listSocialServices'} asChild>
                     <TouchableOpacity style={styles.btnSeachService}>
@@ -31,12 +41,19 @@ const Home = () => {
                         <Text>Buscar serviços</Text>
                     </TouchableOpacity>
                     </Link>
-                    <TouchableOpacity 
-                        style={styles.btnWpp} 
-                        onPress={() => Linking.openURL(`whatsapp://send?text=${`Boa noite, quero entrar em contato com o CRAS`}&phone=31996001712`)}>
-                    <Ionicons name="logo-whatsapp" style={styles.iconWpp}/>
+                    <TouchableOpacity
+                        style={styles.btnWpp}
+                        onPress={() => Linking.openURL("whatsapp://send?text=Boa%20noite,%20quero%20entrar%20em%20contato%20com%20o%20CREAS&phone=31996001712")}
+                    >
+                        <Ionicons name="logo-whatsapp" style={styles.iconWpp}/>
                         <Text style={{color: theme.colors.primaryWhite}}>WhatsApp CREAS</Text>
                     </TouchableOpacity>
+                    <Link href={'/policies'} asChild>
+                        <TouchableOpacity style={styles.btnPolicy}>
+                            <Ionicons name="shield-outline" size={20} color={theme.colors.primaryWhite} />
+                            <Text style={styles.btnPolicyText}>Políticas</Text>
+                        </TouchableOpacity>
+                    </Link>
                 </View>
             </View>
             <View style={styles.sessionBtn}>
